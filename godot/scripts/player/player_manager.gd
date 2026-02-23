@@ -81,17 +81,18 @@ func _try_swap_pawn() -> void:
 				if mg and mg.has_method("cancel"):
 					mg.cancel()
 				return
-			# Start hack if near a terminal
-			var terminal := _find_nearby_terminal()
-			if terminal:
-				terminal.start_hack(jason)
-				return
-			# Remount / restart N.O.V.A.
+			# Remount / restart N.O.V.A. — checked first so the tank always takes priority
+			# over any nearby hackable that might overlap with N.O.V.A.'s position.
 			if jason.global_position.distance_to(nova.global_position) <= MOUNT_RADIUS:
 				if nova.is_stalled:
 					_emergency_restart_nova()
 				else:
 					_swap_to(Pawn.NOVA)
+				return
+			# Start hack if near a terminal (only when not adjacent to N.O.V.A.)
+			var terminal := _find_nearby_terminal()
+			if terminal:
+				terminal.start_hack(jason)
 
 
 func _find_nearby_terminal() -> Node:
