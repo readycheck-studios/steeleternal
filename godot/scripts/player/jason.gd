@@ -6,8 +6,8 @@
 # Collision Mask:  1 (World) | 5 (NeuralVents) | 7 (Enemies) = 81
 extends CharacterBody2D
 
-const MOVE_SPEED: float = 120.0
-const JUMP_VELOCITY: float = -320.0
+const MOVE_SPEED: float = 150.0
+const JUMP_VELOCITY: float = -430.0
 const GRAVITY_MULTIPLIER: float = 1.0
 const COYOTE_TIME: float = 0.15
 const JUMP_BUFFER_TIME: float = 0.1

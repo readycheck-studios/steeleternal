@@ -122,6 +122,6 @@ position = Vector2(850, 300)
 [node name="Grunt_3" parent="." instance=ExtResource("3_grunt")]
 position = Vector2(1300, 300)
 
-; Hacking terminal on Platform_B — disembark Jason and walk right to test the minigame
+; Hacking terminal on the floor — disembark Jason and walk right to test the minigame
 [node name="HackingTerminal" parent="." instance=ExtResource("4_terminal")]
-position = Vector2(640, 198)
+position = Vector2(700, 316)
