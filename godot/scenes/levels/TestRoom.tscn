@@ -134,9 +134,9 @@ position = Vector2(1300, 300)
 [node name="HackingTerminal" parent="." instance=ExtResource("4_terminal")]
 position = Vector2(700, 316)
 
-; Quantum Core — park N.O.V.A. near x=900, disembark Jason, walk to core and press [SPACE]
+; Quantum Core — sits on top of Platform_C. N.O.V.A. parks below; Jason jumps up to hack.
 [node name="QuantumCore" parent="." instance=ExtResource("5_quantum_core")]
-position = Vector2(960, 300)
+position = Vector2(960, 255)
 
 ; Phase A wall — violet barrier blocking the right section in Phase A (default)
 [node name="PhaseWall_A" type="StaticBody2D" parent="."]
