@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/PlayerRoot.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/Grunt.tscn" id="3_grunt"]
 [ext_resource type="PackedScene" path="res://scenes/quantum/HackingTerminal.tscn" id="4_terminal"]
+[ext_resource type="PackedScene" path="res://scenes/quantum/QuantumCore.tscn" id="5_quantum_core"]
+[ext_resource type="Script" path="res://scripts/quantum/phase_body.gd" id="6_phase_body"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(1920, 32)
@@ -13,6 +15,12 @@ size = Vector2(160, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
 size = Vector2(16, 360)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_phase_wall"]
+size = Vector2(16, 184)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_phase_bridge"]
+size = Vector2(220, 16)
 
 [node name="TestRoom" type="Node2D"]
 
@@ -125,3 +133,36 @@ position = Vector2(1300, 300)
 ; Hacking terminal on the floor — disembark Jason and walk right to test the minigame
 [node name="HackingTerminal" parent="." instance=ExtResource("4_terminal")]
 position = Vector2(700, 316)
+
+; Quantum Core — park N.O.V.A. near x=900, disembark Jason, walk to core and press [SPACE]
+[node name="QuantumCore" parent="." instance=ExtResource("5_quantum_core")]
+position = Vector2(960, 300)
+
+; Phase A wall — violet barrier blocking the right section in Phase A (default)
+[node name="PhaseWall_A" type="StaticBody2D" parent="."]
+script = ExtResource("6_phase_body")
+position = Vector2(1080, 252)
+collision_layer = 1
+active_phase = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhaseWall_A"]
+shape = SubResource("RectangleShape2D_phase_wall")
+
+[node name="Visual" type="Polygon2D" parent="PhaseWall_A"]
+polygon = PackedVector2Array(-8, -92, 8, -92, 8, 92, -8, 92)
+color = Color(0.38, 0.10, 0.80, 1.0)
+
+; Phase B bridge — amber elevated platform appearing after Core is activated
+[node name="PhaseBridge_B" type="StaticBody2D" parent="."]
+script = ExtResource("6_phase_body")
+position = Vector2(1230, 260)
+collision_layer = 0
+visible = false
+active_phase = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhaseBridge_B"]
+shape = SubResource("RectangleShape2D_phase_bridge")
+
+[node name="Visual" type="Polygon2D" parent="PhaseBridge_B"]
+polygon = PackedVector2Array(-110, -8, 110, -8, 110, 8, -110, 8)
+color = Color(0.961, 0.620, 0.043, 1.0)

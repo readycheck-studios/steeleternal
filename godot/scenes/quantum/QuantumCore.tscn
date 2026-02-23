@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/quantum/quantum_core.gd" id="1_quantum_core"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HackingMinigame.tscn" id="2_minigame"]
+
+[node name="QuantumCore" type="Node2D"]
+script = ExtResource("1_quantum_core")
+minigame_scene = ExtResource("2_minigame")
+
+; Outer diamond — electric blue (Phase A default)
+[node name="Visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -22, 16, 0, 0, 22, -16, 0)
+color = Color(0.20, 0.40, 1.00, 1.0)
+
+; Inner glow diamond — lighter blue
+[node name="InnerGlow" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -10, 8, 0, 0, 10, -8, 0)
+color = Color(0.50, 0.70, 1.00, 0.60)
+
+; Interact prompt — shown when Jason is in range
+[node name="PromptLabel" type="Label" parent="."]
+position = Vector2(-20, -30)
+text = "[SPACE]"
+theme_override_font_sizes/font_size = 7
+theme_override_colors/font_color = Color(0.961, 0.620, 0.043, 1.0)
+visible = false
+
+; Current phase indicator
+[node name="PhaseLabel" type="Label" parent="."]
+position = Vector2(-16, 26)
+text = "PHASE A"
+theme_override_font_sizes/font_size = 7
+theme_override_colors/font_color = Color(0.40, 0.90, 1.00, 1.0)

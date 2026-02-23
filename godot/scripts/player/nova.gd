@@ -32,6 +32,7 @@ var _gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 func _ready() -> void:
 	collision_layer = 2
 	collision_mask = 73  # World(1) + HeavyGates(8) + Enemies(64)
+	add_to_group("nova_tank")  # QuantumCore queries this group for proximity power check
 
 
 func _physics_process(delta: float) -> void:
