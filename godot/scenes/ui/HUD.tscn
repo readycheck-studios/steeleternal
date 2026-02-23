@@ -106,9 +106,21 @@ offset_top = 154.0
 offset_right = 500.0
 offset_bottom = 180.0
 horizontal_alignment = 1
-text = "⚠  N·O·V·A  STALLED"
-theme_override_font_sizes/font_size = 14
+text = "⚠  N·O·V·A  STALLED  —  RETURN TO RESTART"
+theme_override_font_sizes/font_size = 12
 theme_override_colors/font_color = Color(1.0, 0.28, 0.08, 1.0)
+visible = false
+
+; ── Run Failed — center screen, hidden until run ends ───────────────────────
+[node name="RunFailedLabel" type="Label" parent="StaticHUD/HUDRoot"]
+offset_left = 100.0
+offset_top = 185.0
+offset_right = 540.0
+offset_bottom = 215.0
+horizontal_alignment = 1
+text = "✖  RUN FAILED"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.8, 0.1, 0.1, 1.0)
 visible = false
 
 ; ─── Glitch Overlay (Z = 100) ──────────────────────────────────────────────

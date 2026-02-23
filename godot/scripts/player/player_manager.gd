@@ -12,14 +12,17 @@ extends Node2D
 enum Pawn { NOVA, JASON }
 
 var active_pawn: Pawn = Pawn.NOVA
+var _run_over: bool = false
 
-# Jason must be within this radius of N.O.V.A. to remount.
+# Jason must be within this radius of N.O.V.A. to remount or restart her.
 const MOUNT_RADIUS: float = 48.0
 
 
 func _ready() -> void:
 	tether_handler.setup(nova, jason)
 	_activate_pawn(Pawn.NOVA)
+	Events.on_tank_stalled.connect(_on_tank_stalled)
+	Events.on_run_ended.connect(_on_run_ended)
 	# Deferred so all enemy _ready() calls finish connecting before this fires.
 	call_deferred("_emit_initial_pawn")
 
@@ -35,6 +38,8 @@ func _process(_delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _run_over:
+		return
 	if event.is_action_pressed("p_interact"):
 		_try_swap_pawn()
 
@@ -47,9 +52,12 @@ func _try_swap_pawn() -> void:
 			# Disembark: always allowed
 			_swap_to(Pawn.JASON)
 		Pawn.JASON:
-			# Remount: only if Jason is close enough
 			if jason.global_position.distance_to(nova.global_position) <= MOUNT_RADIUS:
-				_swap_to(Pawn.NOVA)
+				if nova.is_stalled:
+					# Simplified restart — Quick-Fix rhythm mini-game comes later.
+					_emergency_restart_nova()
+				else:
+					_swap_to(Pawn.NOVA)
 
 
 func _swap_to(target: Pawn) -> void:
@@ -83,6 +91,28 @@ func _activate_pawn(pawn: Pawn) -> void:
 	jason.set_physics_process(pawn == Pawn.JASON)
 	jason.set_process_unhandled_input(pawn == Pawn.JASON)
 	jason.visible = (pawn == Pawn.JASON)
+
+
+func _emergency_restart_nova() -> void:
+	# Restores 50 stability and re-enables N.O.V.A.
+	# The real Quick-Fix rhythm mini-game will replace this later.
+	nova.restore_stability(50.0)
+	_swap_to(Pawn.NOVA)
+
+
+# --- Event Handlers ---
+
+func _on_tank_stalled() -> void:
+	# Auto-eject Jason so the player can navigate back to restart N.O.V.A.
+	if active_pawn == Pawn.NOVA:
+		_swap_to(Pawn.JASON)
+
+
+func _on_run_ended(_cause: String) -> void:
+	_run_over = true
+	# Reload the scene after the HUD has had time to show the failure message.
+	await get_tree().create_timer(2.5).timeout
+	get_tree().reload_current_scene()
 
 
 func _get_pawn_node(pawn: Pawn) -> CharacterBody2D:

@@ -18,8 +18,9 @@ const BAR_BG     := Color(0.067, 0.067, 0.098, 0.90)
 @onready var hp_bar:          ProgressBar = $StaticHUD/HUDRoot/JasonPanel/HPRow/HPBar
 @onready var hp_value:        Label       = $StaticHUD/HUDRoot/JasonPanel/HPRow/HPValue
 @onready var mode_label:      Label       = $StaticHUD/HUDRoot/ModeLabel
-@onready var stalled_alert:   Label       = $StaticHUD/HUDRoot/StalledAlert
-@onready var glitch_rect:     ColorRect   = $GlitchOverlay/GlitchRect
+@onready var stalled_alert:    Label       = $StaticHUD/HUDRoot/StalledAlert
+@onready var run_failed_label: Label       = $StaticHUD/HUDRoot/RunFailedLabel
+@onready var glitch_rect:      ColorRect   = $GlitchOverlay/GlitchRect
 
 
 func _ready() -> void:
@@ -34,6 +35,7 @@ func _connect_signals() -> void:
 	Events.on_pawn_swapped.connect(_on_pawn_swapped)
 	Events.on_tank_stalled.connect(_on_tank_stalled)
 	Events.on_tether_strained.connect(_on_tether_strained)
+	Events.on_run_ended.connect(_on_run_ended)
 
 
 func _apply_styles() -> void:
@@ -80,6 +82,13 @@ func _on_pawn_swapped(active_node: Node2D) -> void:
 
 func _on_tank_stalled() -> void:
 	stalled_alert.visible = true
+
+
+func _on_run_ended(cause: String) -> void:
+	stalled_alert.visible = false
+	var reason := "JASON LOST" if cause == "jason_died" else "N·O·V·A DESTROYED"
+	run_failed_label.text = "✖  RUN FAILED  —  " + reason
+	run_failed_label.visible = true
 
 
 func _on_tether_strained(severity: float) -> void:

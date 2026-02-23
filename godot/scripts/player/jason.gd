@@ -75,6 +75,9 @@ func take_hit(damage: float) -> void:
 	hp = clampf(hp - damage, 0.0, MAX_HP)
 	Events.on_jason_health_changed.emit(hp)
 	if hp <= 0.0:
+		# Freeze Jason in place so enemies don't keep pushing the corpse.
+		set_physics_process(false)
+		set_process_unhandled_input(false)
 		Events.on_run_ended.emit("jason_died")
 
 
