@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/PlayerRoot.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(640, 32)
@@ -69,3 +70,5 @@ shape = SubResource("RectangleShape2D_wall")
 
 [node name="PlayerRoot" parent="." instance=ExtResource("1_player")]
 position = Vector2(100, 300)
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]

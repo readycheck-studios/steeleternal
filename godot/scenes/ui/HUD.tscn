@@ -1,0 +1,122 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud"]
+[ext_resource type="Shader" path="res://shaders/neural_glitch.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glitch"]
+shader = ExtResource("2_shader")
+shader_parameter/interference_strength = 0.0
+
+[node name="HUDContainer" type="Node"]
+script = ExtResource("1_hud")
+
+; ─── Static HUD (Z = 80) ───────────────────────────────────────────────────
+[node name="StaticHUD" type="CanvasLayer" parent="."]
+layer = 80
+
+[node name="HUDRoot" type="Control" parent="StaticHUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+; ── N.O.V.A. Stability — top-left ──────────────────────────────────────────
+[node name="NOVAPanel" type="VBoxContainer" parent="StaticHUD/HUDRoot"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 138.0
+offset_bottom = 52.0
+theme_override_constants/separation = 3
+
+[node name="NOVALabel" type="Label" parent="StaticHUD/HUDRoot/NOVAPanel"]
+text = "N·O·V·A"
+theme_override_font_sizes/font_size = 9
+
+[node name="StabilityRow" type="HBoxContainer" parent="StaticHUD/HUDRoot/NOVAPanel"]
+theme_override_constants/separation = 4
+
+[node name="StabilityBar" type="ProgressBar" parent="StaticHUD/HUDRoot/NOVAPanel/StabilityRow"]
+custom_minimum_size = Vector2(88, 8)
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="StabilityValue" type="Label" parent="StaticHUD/HUDRoot/NOVAPanel/StabilityRow"]
+text = "100"
+theme_override_font_sizes/font_size = 9
+
+; ── Phase Dust — top-right ──────────────────────────────────────────────────
+[node name="PhaseDustPanel" type="HBoxContainer" parent="StaticHUD/HUDRoot"]
+offset_left = 556.0
+offset_top = 8.0
+offset_right = 632.0
+offset_bottom = 26.0
+theme_override_constants/separation = 3
+
+[node name="DustIcon" type="Label" parent="StaticHUD/HUDRoot/PhaseDustPanel"]
+text = "◈"
+theme_override_font_sizes/font_size = 12
+
+[node name="DustCount" type="Label" parent="StaticHUD/HUDRoot/PhaseDustPanel"]
+text = "0"
+theme_override_font_sizes/font_size = 11
+
+; ── Jason HP — bottom-left, hidden in Tank mode ─────────────────────────────
+[node name="JasonPanel" type="VBoxContainer" parent="StaticHUD/HUDRoot"]
+offset_left = 8.0
+offset_top = 310.0
+offset_right = 142.0
+offset_bottom = 352.0
+visible = false
+theme_override_constants/separation = 3
+
+[node name="PilotLabel" type="Label" parent="StaticHUD/HUDRoot/JasonPanel"]
+text = "PILOT"
+theme_override_font_sizes/font_size = 9
+
+[node name="HPRow" type="HBoxContainer" parent="StaticHUD/HUDRoot/JasonPanel"]
+theme_override_constants/separation = 4
+
+[node name="HPBar" type="ProgressBar" parent="StaticHUD/HUDRoot/JasonPanel/HPRow"]
+custom_minimum_size = Vector2(64, 6)
+max_value = 30.0
+value = 30.0
+show_percentage = false
+
+[node name="HPValue" type="Label" parent="StaticHUD/HUDRoot/JasonPanel/HPRow"]
+text = "30"
+theme_override_font_sizes/font_size = 9
+
+; ── Mode Label — bottom-center ──────────────────────────────────────────────
+[node name="ModeLabel" type="Label" parent="StaticHUD/HUDRoot"]
+offset_left = 220.0
+offset_top = 344.0
+offset_right = 420.0
+offset_bottom = 358.0
+horizontal_alignment = 1
+text = "◉  TANK MODE"
+theme_override_font_sizes/font_size = 9
+
+; ── Stalled Alert — center screen, hidden until triggered ───────────────────
+[node name="StalledAlert" type="Label" parent="StaticHUD/HUDRoot"]
+offset_left = 140.0
+offset_top = 154.0
+offset_right = 500.0
+offset_bottom = 180.0
+horizontal_alignment = 1
+text = "⚠  N·O·V·A  STALLED"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(1.0, 0.28, 0.08, 1.0)
+visible = false
+
+; ─── Glitch Overlay (Z = 100) ──────────────────────────────────────────────
+[node name="GlitchOverlay" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="GlitchRect" type="ColorRect" parent="GlitchOverlay"]
+offset_right = 640.0
+offset_bottom = 360.0
+mouse_filter = 2
+material = SubResource("ShaderMaterial_glitch")
