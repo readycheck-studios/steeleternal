@@ -8,6 +8,12 @@ const AMBER      := Color(0.961, 0.620, 0.043, 1.0)
 const BLUE_PILOT := Color(0.251, 0.647, 0.961, 1.0)
 const BAR_BG     := Color(0.067, 0.067, 0.098, 0.90)
 
+const DANGER_THRESHOLD: float = 0.80   # Glitch starts at 80% tether distance
+const GLITCH_LERP_SPEED: float = 8.0   # How fast the shader value tracks the target
+
+var _glitch_target: float = 0.0
+var _glitch_current: float = 0.0
+
 @onready var nova_label:      Label       = $StaticHUD/HUDRoot/NOVAPanel/NOVALabel
 @onready var stability_bar:   ProgressBar = $StaticHUD/HUDRoot/NOVAPanel/StabilityRow/StabilityBar
 @onready var stability_value: Label       = $StaticHUD/HUDRoot/NOVAPanel/StabilityRow/StabilityValue
@@ -92,6 +98,18 @@ func _on_run_ended(cause: String) -> void:
 
 
 func _on_tether_strained(severity: float) -> void:
+	# Remap: no effect below DANGER_THRESHOLD, ramps 0→1 over the remaining 20%
+	_glitch_target = clampf(
+		(severity - DANGER_THRESHOLD) / (1.0 - DANGER_THRESHOLD), 0.0, 1.0)
+
+
+func _process(delta: float) -> void:
+	if _glitch_current == 0.0 and _glitch_target == 0.0:
+		return  # Skip shader write entirely when fully clear
+	_glitch_current = lerpf(_glitch_current, _glitch_target, GLITCH_LERP_SPEED * delta)
+	# Subtle sine pulse scales with current intensity — sells the interference feel
+	var pulse := sin(Time.get_ticks_msec() * 0.005) * 0.06 * _glitch_current
 	var mat := glitch_rect.material as ShaderMaterial
 	if mat:
-		mat.set_shader_parameter("interference_strength", severity)
+		mat.set_shader_parameter("interference_strength",
+			clampf(_glitch_current + pulse, 0.0, 1.0))
