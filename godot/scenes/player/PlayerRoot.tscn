@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player_manager.gd" id="1_mgr"]
+[ext_resource type="Script" path="res://scripts/player/nova.gd" id="2_nova"]
+[ext_resource type="Script" path="res://scripts/player/jason.gd" id="3_jason"]
+[ext_resource type="Script" path="res://scripts/player/tether_handler.gd" id="4_tether"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nova"]
+size = Vector2(48, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jason"]
+size = Vector2(14, 28)
+
+[node name="PlayerRoot" type="Node2D"]
+script = ExtResource("1_mgr")
+
+[node name="NOVA_Tank" type="CharacterBody2D" parent="."]
+collision_layer = 2
+collision_mask = 73
+script = ExtResource("2_nova")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NOVA_Tank"]
+shape = SubResource("RectangleShape2D_nova")
+
+[node name="PlaceholderSprite" type="Polygon2D" parent="NOVA_Tank"]
+polygon = PackedVector2Array(-24, -14, 24, -14, 24, 14, -24, 14)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+[node name="WeaponHardpoint" type="Marker2D" parent="NOVA_Tank"]
+position = Vector2(28, -8)
+
+[node name="Jason_Pilot" type="CharacterBody2D" parent="."]
+collision_layer = 4
+collision_mask = 81
+visible = false
+script = ExtResource("3_jason")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Jason_Pilot"]
+shape = SubResource("RectangleShape2D_jason")
+
+[node name="PlaceholderSprite" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-7, -14, 7, -14, 7, 14, -7, 14)
+color = Color(0.251, 0.647, 0.961, 1.0)
+
+[node name="CameraManager" type="Camera2D" parent="."]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="CameraManager"]
+
+[node name="NeuralTetherLogic" type="Node" parent="."]
+script = ExtResource("4_tether")
+
+[node name="TetherTimer" type="Timer" parent="NeuralTetherLogic"]
+wait_time = 0.1
+one_shot = false

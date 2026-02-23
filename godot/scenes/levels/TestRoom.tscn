@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/PlayerRoot.tscn" id="1_player"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(640, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+size = Vector2(128, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(16, 360)
+
+[node name="TestRoom" type="Node2D"]
+
+[node name="Background" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, 0, 640, 0, 640, 360, 0, 360)
+color = Color(0.067, 0.067, 0.098, 1.0)
+z_index = -10
+
+[node name="WorldGeometry" type="Node2D" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(320, 344)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Floor"]
+polygon = PackedVector2Array(-320, -16, 320, -16, 320, 16, -320, 16)
+color = Color(0.220, 0.220, 0.270, 1.0)
+
+[node name="PlatformA" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(160, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/PlatformA"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/PlatformA"]
+polygon = PackedVector2Array(-64, -8, 64, -8, 64, 8, -64, 8)
+color = Color(0.220, 0.220, 0.270, 1.0)
+
+[node name="PlatformB" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(420, 210)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/PlatformB"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/PlatformB"]
+polygon = PackedVector2Array(-64, -8, 64, -8, 64, 8, -64, 8)
+color = Color(0.220, 0.220, 0.270, 1.0)
+
+[node name="WallLeft" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(8, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/WallLeft"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="WallRight" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(632, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/WallRight"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="PlayerRoot" parent="." instance=ExtResource("1_player")]
+position = Vector2(100, 300)
