@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/PlayerRoot.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/Grunt.tscn" id="3_grunt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(1920, 32)
@@ -110,3 +111,12 @@ color = Color(0.200, 0.200, 0.250, 1.0)
 position = Vector2(200, 300)
 
 [node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="Grunt_1" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(480, 300)
+
+[node name="Grunt_2" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(850, 300)
+
+[node name="Grunt_3" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(1300, 300)

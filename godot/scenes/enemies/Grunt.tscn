@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/grunt.gd" id="1_grunt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_grunt"]
+size = Vector2(18, 24)
+
+[node name="Grunt" type="CharacterBody2D"]
+collision_layer = 64
+collision_mask = 39
+script = ExtResource("1_grunt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_grunt")
+
+[node name="PlaceholderSprite" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-9, -12, 9, -12, 9, 12, -9, 12)
+color = Color(0.820, 0.149, 0.149, 1.0)

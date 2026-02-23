@@ -20,6 +20,12 @@ const MOUNT_RADIUS: float = 48.0
 func _ready() -> void:
 	tether_handler.setup(nova, jason)
 	_activate_pawn(Pawn.NOVA)
+	# Deferred so all enemy _ready() calls finish connecting before this fires.
+	call_deferred("_emit_initial_pawn")
+
+
+func _emit_initial_pawn() -> void:
+	Events.on_pawn_swapped.emit(nova)
 
 
 func _process(_delta: float) -> void:
