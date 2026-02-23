@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/projectile.gd" id="1_proj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_proj"]
+size = Vector2(14, 4)
+
+[node name="Projectile" type="CharacterBody2D"]
+collision_layer = 32
+collision_mask = 65
+script = ExtResource("1_proj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_proj")
+
+; Amber tracer — elongated along x, rotation applied at runtime by setup()
+[node name="Visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-7, -2, 7, -2, 7, 2, -7, 2)
+color = Color(1.0, 0.82, 0.15, 1.0)

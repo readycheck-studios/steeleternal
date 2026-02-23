@@ -13,6 +13,10 @@ enum Pawn { NOVA, JASON }
 
 var active_pawn: Pawn = Pawn.NOVA
 var _run_over: bool = false
+var _shake_intensity: float = 0.0
+
+const SHAKE_DECAY: float = 10.0
+const SHAKE_PIXELS: float = 8.0  # Max pixel offset at intensity 1.0
 
 # Jason must be within this radius of N.O.V.A. to remount or restart her.
 const MOUNT_RADIUS: float = 48.0
@@ -23,6 +27,7 @@ func _ready() -> void:
 	_activate_pawn(Pawn.NOVA)
 	Events.on_tank_stalled.connect(_on_tank_stalled)
 	Events.on_run_ended.connect(_on_run_ended)
+	Events.on_screen_shake.connect(_on_screen_shake)
 	# Deferred so all enemy _ready() calls finish connecting before this fires.
 	call_deferred("_emit_initial_pawn")
 
@@ -31,10 +36,24 @@ func _emit_initial_pawn() -> void:
 	Events.on_pawn_swapped.emit(nova)
 
 
-func _process(_delta: float) -> void:
-	# Keep camera snapped to active pawn each frame.
-	# Camera2D's position_smoothing handles the lerped follow effect.
+func _process(delta: float) -> void:
 	camera_manager.global_position = _get_pawn_node(active_pawn).global_position
+	_update_screen_shake(delta)
+
+
+func _update_screen_shake(delta: float) -> void:
+	if _shake_intensity > 0.0:
+		camera_manager.offset = Vector2(
+			randf_range(-_shake_intensity, _shake_intensity),
+			randf_range(-_shake_intensity, _shake_intensity)
+		)
+		_shake_intensity = lerpf(_shake_intensity, 0.0, SHAKE_DECAY * delta)
+	else:
+		camera_manager.offset = Vector2.ZERO
+
+
+func _on_screen_shake(intensity: float) -> void:
+	_shake_intensity = maxf(_shake_intensity, intensity * SHAKE_PIXELS)
 
 
 func _unhandled_input(event: InputEvent) -> void:

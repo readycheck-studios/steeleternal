@@ -28,3 +28,6 @@ signal on_jason_health_changed(new_value: float)   # 0.0 to 30.0
 
 # --- Run ---
 signal on_run_ended(cause: String)  # e.g. "jason_died", "nova_destroyed", "tether_severed"
+
+# --- Camera ---
+signal on_screen_shake(intensity: float)  # 0.0 to 1.0 normalised

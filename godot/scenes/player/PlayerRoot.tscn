@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player_manager.gd" id="1_mgr"]
 [ext_resource type="Script" path="res://scripts/player/nova.gd" id="2_nova"]
 [ext_resource type="Script" path="res://scripts/player/jason.gd" id="3_jason"]
 [ext_resource type="Script" path="res://scripts/player/tether_handler.gd" id="4_tether"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/Projectile.tscn" id="5_proj"]
+[ext_resource type="Resource" path="res://data/weapons/cannon_kinetic.tres" id="6_cannon"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nova"]
 size = Vector2(48, 28)
@@ -18,6 +20,8 @@ script = ExtResource("1_mgr")
 collision_layer = 2
 collision_mask = 73
 script = ExtResource("2_nova")
+main_weapon = ExtResource("6_cannon")
+projectile_scene = ExtResource("5_proj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NOVA_Tank"]
 shape = SubResource("RectangleShape2D_nova")
