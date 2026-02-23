@@ -1,0 +1,65 @@
+name: Discord Dev-Log
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  post-devlog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Post to Discord #dev-updates
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: |
+          CHANNEL_ID="1475632213037944912"
+
+          COMMIT_SHA="${{ github.sha }}"
+          SHORT_SHA="${COMMIT_SHA:0:7}"
+          COMMIT_MSG=$(git log -1 --pretty=%s)
+          COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${COMMIT_SHA}"
+          BRANCH="${{ github.ref_name }}"
+          REPO="${{ github.repository }}"
+
+          # Count changed files
+          FILES_CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null | wc -l | tr -d ' ')
+
+          python3 << PYEOF
+          import urllib.request, json, os
+
+          token = os.environ["DISCORD_BOT_TOKEN"]
+          channel_id = "${CHANNEL_ID}"
+
+          payload = {
+            "embeds": [{
+              "title": "🔧 New Push — Steel Eternal",
+              "color": 0xF39C0B,
+              "fields": [
+                {"name": "Branch", "value": "`${BRANCH}`", "inline": True},
+                {"name": "Files changed", "value": "${FILES_CHANGED}", "inline": True},
+                {"name": "Author", "value": "${COMMIT_AUTHOR}", "inline": True},
+                {"name": "Commit", "value": "[`${SHORT_SHA}`](${COMMIT_URL})\n${COMMIT_MSG}", "inline": False},
+              ],
+              "footer": {"text": "${REPO}"},
+              "timestamp": "${{ github.event.head_commit.timestamp }}"
+            }]
+          }
+
+          data = json.dumps(payload).encode()
+          req = urllib.request.Request(
+            f"https://discord.com/api/v10/channels/{channel_id}/messages",
+            data=data,
+            headers={
+              "Authorization": f"Bot {token}",
+              "Content-Type": "application/json"
+            }
+          )
+          with urllib.request.urlopen(req) as resp:
+            print(f"Discord response: {resp.status}")
+          PYEOF
