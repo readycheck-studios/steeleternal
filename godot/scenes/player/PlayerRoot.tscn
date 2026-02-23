@@ -50,8 +50,6 @@ limit_bottom = 360
 position_smoothing_enabled = true
 position_smoothing_speed = 6.0
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="CameraManager"]
-
 [node name="NeuralTetherLogic" type="Node" parent="."]
 script = ExtResource("4_tether")
 

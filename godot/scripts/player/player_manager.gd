@@ -8,7 +8,6 @@ extends Node2D
 @onready var jason: CharacterBody2D = $Jason_Pilot
 @onready var camera_manager: Camera2D = $CameraManager
 @onready var tether_handler: Node = $NeuralTetherLogic
-@onready var remote_transform: RemoteTransform2D = $CameraManager/RemoteTransform2D
 
 enum Pawn { NOVA, JASON }
 
@@ -21,6 +20,12 @@ const MOUNT_RADIUS: float = 48.0
 func _ready() -> void:
 	tether_handler.setup(nova, jason)
 	_activate_pawn(Pawn.NOVA)
+
+
+func _process(_delta: float) -> void:
+	# Keep camera snapped to active pawn each frame.
+	# Camera2D's position_smoothing handles the lerped follow effect.
+	camera_manager.global_position = _get_pawn_node(active_pawn).global_position
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -52,9 +57,6 @@ func _swap_to(target: Pawn) -> void:
 	target_node.set_physics_process(true)
 	target_node.set_process_unhandled_input(true)
 
-	# Redirect camera
-	remote_transform.remote_path = target_node.get_path()
-
 	# Tether and spawn logic
 	if target == Pawn.JASON:
 		# Spawn Jason just above the hatch
@@ -75,7 +77,6 @@ func _activate_pawn(pawn: Pawn) -> void:
 	jason.set_physics_process(pawn == Pawn.JASON)
 	jason.set_process_unhandled_input(pawn == Pawn.JASON)
 	jason.visible = (pawn == Pawn.JASON)
-	remote_transform.remote_path = _get_pawn_node(pawn).get_path()
 
 
 func _get_pawn_node(pawn: Pawn) -> CharacterBody2D:
