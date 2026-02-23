@@ -43,6 +43,12 @@ polygon = PackedVector2Array(-7, -14, 7, -14, 7, 14, -7, 14)
 color = Color(0.251, 0.647, 0.961, 1.0)
 
 [node name="CameraManager" type="Camera2D" parent="."]
+limit_left = 0
+limit_top = 0
+limit_right = 1920
+limit_bottom = 360
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="CameraManager"]
 
