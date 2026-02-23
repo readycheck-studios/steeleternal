@@ -1,0 +1,10 @@
+# Environment — never commit secrets
+.env
+
+# Godot build cache — generated locally, not needed in repo
+godot/.godot/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
