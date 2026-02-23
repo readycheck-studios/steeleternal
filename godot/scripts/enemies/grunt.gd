@@ -1,7 +1,7 @@
 # grunt.gd
 # Basic enemy — patrols, detects the active pawn, chases, lunges on attack.
 # Vulnerable to everything: N.O.V.A. cannon, crush damage, Jason's Data-Spike.
-extends EnemyBase
+extends "res://scripts/enemies/enemy_base.gd"
 
 const LUNGE_FORCE: float = 160.0
 const LUNGE_COOLDOWN: float = 1.2
