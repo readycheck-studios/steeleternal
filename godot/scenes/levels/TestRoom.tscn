@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/PlayerRoot.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/Grunt.tscn" id="3_grunt"]
+[ext_resource type="PackedScene" path="res://scenes/quantum/HackingTerminal.tscn" id="4_terminal"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(1920, 32)
@@ -120,3 +121,7 @@ position = Vector2(850, 300)
 
 [node name="Grunt_3" parent="." instance=ExtResource("3_grunt")]
 position = Vector2(1300, 300)
+
+; Hacking terminal on Platform_B — disembark Jason and walk right to test the minigame
+[node name="HackingTerminal" parent="." instance=ExtResource("4_terminal")]
+position = Vector2(640, 198)

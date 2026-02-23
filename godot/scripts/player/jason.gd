@@ -14,6 +14,7 @@ const JUMP_BUFFER_TIME: float = 0.1
 const MAX_HP: float = 30.0
 
 var hp: float = MAX_HP
+var is_hacking: bool = false
 
 var _coyote_timer: float = 0.0
 var _jump_buffer_timer: float = 0.0
@@ -57,11 +58,16 @@ func _apply_gravity(delta: float) -> void:
 
 
 func _handle_movement() -> void:
+	if is_hacking:
+		velocity.x = 0.0
+		return
 	var dir := Input.get_axis("p_move_left", "p_move_right")
 	velocity.x = dir * MOVE_SPEED
 
 
 func _handle_jump() -> void:
+	if is_hacking:
+		return
 	var can_jump := is_on_floor() or _coyote_timer > 0.0
 	if _jump_buffer_timer > 0.0 and can_jump:
 		velocity.y = JUMP_VELOCITY

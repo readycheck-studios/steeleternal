@@ -13,6 +13,7 @@ enum Pawn { NOVA, JASON }
 
 var active_pawn: Pawn = Pawn.NOVA
 var _run_over: bool = false
+var _is_hacking: bool = false
 var _shake_intensity: float = 0.0
 
 const SHAKE_DECAY: float = 10.0
@@ -28,6 +29,9 @@ func _ready() -> void:
 	Events.on_tank_stalled.connect(_on_tank_stalled)
 	Events.on_run_ended.connect(_on_run_ended)
 	Events.on_screen_shake.connect(_on_screen_shake)
+	Events.on_hack_started.connect(func(_d): _is_hacking = true; jason.is_hacking = true)
+	Events.on_hack_completed.connect(func(): _is_hacking = false; jason.is_hacking = false)
+	Events.on_hack_failed.connect(func(): _is_hacking = false; jason.is_hacking = false)
 	# Deferred so all enemy _ready() calls finish connecting before this fires.
 	call_deferred("_emit_initial_pawn")
 
@@ -71,12 +75,32 @@ func _try_swap_pawn() -> void:
 			# Disembark: always allowed
 			_swap_to(Pawn.JASON)
 		Pawn.JASON:
+			# Cancel active hack
+			if _is_hacking:
+				var mg := jason.get_node_or_null("HackingMinigame")
+				if mg and mg.has_method("cancel"):
+					mg.cancel()
+				return
+			# Start hack if near a terminal
+			var terminal := _find_nearby_terminal()
+			if terminal:
+				terminal.start_hack(jason)
+				return
+			# Remount / restart N.O.V.A.
 			if jason.global_position.distance_to(nova.global_position) <= MOUNT_RADIUS:
 				if nova.is_stalled:
-					# Simplified restart — Quick-Fix rhythm mini-game comes later.
 					_emergency_restart_nova()
 				else:
 					_swap_to(Pawn.NOVA)
+
+
+func _find_nearby_terminal() -> Node:
+	const TERMINAL_RADIUS: float = 40.0
+	for terminal in get_tree().get_nodes_in_group("hackable"):
+		if not terminal.is_hacked and \
+		   jason.global_position.distance_to(terminal.global_position) <= TERMINAL_RADIUS:
+			return terminal
+	return null
 
 
 func _swap_to(target: Pawn) -> void:
