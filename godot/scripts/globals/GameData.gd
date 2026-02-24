@@ -31,6 +31,7 @@ func _ready() -> void:
 	Events.on_tank_stability_changed.connect(func(v: float) -> void: current_stability_nova = v)
 	Events.on_world_shifted.connect(_on_world_shifted)
 	Events.on_run_ended.connect(_on_run_ended)
+	Events.on_pawn_swapped.connect(func(_n: Node2D) -> void: save_run_state())
 
 
 # --- Signal Handlers ---
