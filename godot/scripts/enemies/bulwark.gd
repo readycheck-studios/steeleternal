@@ -30,6 +30,14 @@ func _on_enemy_ready() -> void:
 	vent.vent_hacked.connect(_on_vent_hacked)
 
 
+# Bulwark always faces N.O.V.A. — never Jason.
+# This keeps the back exposed so Jason can flank and hack the vent.
+func _on_pawn_swapped(_active_node: Node2D) -> void:
+	var nova_nodes := get_tree().get_nodes_in_group("nova_tank")
+	if not nova_nodes.is_empty():
+		target = nova_nodes[0]
+
+
 # --- Armour ---
 
 func take_damage(amount: float) -> void:

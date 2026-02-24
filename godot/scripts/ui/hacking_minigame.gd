@@ -130,7 +130,7 @@ func _draw() -> void:
 	# Control hint (below panel)
 	draw_string(ThemeDB.fallback_font,
 		Vector2(-hw, hh + 12),
-		"W/S:AMP   A/D:FREQ   Q/E:PHASE",
+		"Spc/S:AMP  A/D:FREQ  Q/R:PHASE",
 		HORIZONTAL_ALIGNMENT_LEFT, DISPLAY_W, 8, C_TEXT)
 
 
