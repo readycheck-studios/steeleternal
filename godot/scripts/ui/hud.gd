@@ -33,6 +33,8 @@ func _ready() -> void:
 	_apply_styles()
 	_connect_signals()
 	dust_count.text = str(GameData.phase_dust)
+	# Explicitly zero the shader on every scene load — prevents stale GPU value after reload.
+	_reset_glitch()
 
 
 func _connect_signals() -> void:
@@ -103,12 +105,20 @@ func _on_tether_strained(severity: float) -> void:
 		(severity - DANGER_THRESHOLD) / (1.0 - DANGER_THRESHOLD), 0.0, 1.0)
 
 
+func _reset_glitch() -> void:
+	_glitch_target = 0.0
+	_glitch_current = 0.0
+	var mat := glitch_rect.material as ShaderMaterial
+	if mat:
+		mat.set_shader_parameter("interference_strength", 0.0)
+
+
 func _process(delta: float) -> void:
 	if _glitch_current == 0.0 and _glitch_target == 0.0:
 		return  # Skip shader write entirely when fully clear
 	_glitch_current = lerpf(_glitch_current, _glitch_target, GLITCH_LERP_SPEED * delta)
-	# Subtle sine pulse scales with current intensity — sells the interference feel
-	var pulse := sin(Time.get_ticks_msec() * 0.005) * 0.06 * _glitch_current
+	# Sine pulse: 0.8s cycle, ±15% swing at full intensity — visible breathing in Danger Zone
+	var pulse := sin(Time.get_ticks_msec() * 0.008) * 0.15 * _glitch_current
 	var mat := glitch_rect.material as ShaderMaterial
 	if mat:
 		mat.set_shader_parameter("interference_strength",
