@@ -125,11 +125,14 @@ func _swap_to(target: Pawn) -> void:
 
 	# Tether and spawn logic
 	if target == Pawn.JASON:
-		# Spawn Jason just above the hatch
+		# Re-enable collision before spawning so Jason is tangible immediately
+		jason.get_node("CollisionShape2D").disabled = false
 		jason.global_position = nova.global_position + Vector2(0, -28)
 		jason.visible = true
 		tether_handler.start_tracking()
 	else:
+		# Disable collision so enemies can't hit Jason's invisible body while boarded
+		jason.get_node("CollisionShape2D").disabled = true
 		_regen_timer = 0.0
 		jason.visible = false
 		tether_handler.stop_tracking()
@@ -144,6 +147,7 @@ func _activate_pawn(pawn: Pawn) -> void:
 	jason.set_physics_process(pawn == Pawn.JASON)
 	jason.set_process_unhandled_input(pawn == Pawn.JASON)
 	jason.visible = (pawn == Pawn.JASON)
+	jason.get_node("CollisionShape2D").disabled = (pawn == Pawn.NOVA)
 
 
 func _emergency_restart_nova() -> void:
