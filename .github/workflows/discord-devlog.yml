@@ -23,45 +23,47 @@ jobs:
           REPO: ${{ github.repository }}
           BRANCH: ${{ github.ref_name }}
         run: |
-          CHANNEL_ID="1475632213037944912"
-          SHORT_SHA="${COMMIT_SHA:0:7}"
-          COMMIT_URL="https://github.com/${REPO}/commit/${COMMIT_SHA}"
           FILES_CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null | wc -l | tr -d ' ')
+          python3 - <<'PYEOF'
+import os, json, urllib.request, sys
 
-          PAYLOAD=$(jq -n \
-            --arg branch "$BRANCH" \
-            --arg files "$FILES_CHANGED" \
-            --arg author "$COMMIT_AUTHOR" \
-            --arg sha "$SHORT_SHA" \
-            --arg url "$COMMIT_URL" \
-            --arg msg "$COMMIT_MSG" \
-            --arg repo "$REPO" \
-            --arg ts "$COMMIT_TIMESTAMP" \
-            '{
-              embeds: [{
-                title: "🔧 New Push — Steel Eternal",
-                color: 15964171,
-                fields: [
-                  {name: "Branch",        value: ("`" + $branch + "`"), inline: true},
-                  {name: "Files changed", value: $files,                inline: true},
-                  {name: "Author",        value: $author,               inline: true},
-                  {name: "Commit",        value: ("`" + $sha + "` — " + $msg + "\n[View on GitHub](" + $url + ")"), inline: false}
-                ],
-                footer: {text: $repo},
-                timestamp: $ts
-              }]
-            }')
+token     = os.environ["DISCORD_BOT_TOKEN"]
+sha       = os.environ["COMMIT_SHA"][:7]
+msg       = os.environ["COMMIT_MSG"].split("\n")[0]   # first line only
+author    = os.environ["COMMIT_AUTHOR"]
+repo      = os.environ["REPO"]
+branch    = os.environ["BRANCH"]
+ts        = os.environ["COMMIT_TIMESTAMP"]
+files     = os.environ.get("FILES_CHANGED", "?")
+url       = f"https://github.com/{repo}/commit/{os.environ['COMMIT_SHA']}"
+channel   = "1475632213037944912"
 
-          HTTP_STATUS=$(curl -s -o /tmp/discord_response.json -w "%{http_code}" -X POST \
-            "https://discord.com/api/v10/channels/${CHANNEL_ID}/messages" \
-            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
-            -H "Content-Type: application/json" \
-            -d "$PAYLOAD")
+payload = json.dumps({
+    "embeds": [{
+        "title": "\U0001f527 New Push \u2014 Steel Eternal",
+        "color": 15964171,
+        "fields": [
+            {"name": "Branch",        "value": f"`{branch}`",                     "inline": True},
+            {"name": "Files changed", "value": files,                             "inline": True},
+            {"name": "Author",        "value": author,                            "inline": True},
+            {"name": "Commit",        "value": f"`{sha}` \u2014 {msg}\n[View on GitHub]({url})", "inline": False},
+        ],
+        "footer": {"text": repo},
+        "timestamp": ts,
+    }]
+}).encode()
 
-          echo "Discord API status: $HTTP_STATUS"
-          cat /tmp/discord_response.json
-
-          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
-            echo "::error::Discord post failed with HTTP $HTTP_STATUS"
-            exit 1
-          fi
+req = urllib.request.Request(
+    f"https://discord.com/api/v10/channels/{channel}/messages",
+    data=payload,
+    headers={"Authorization": f"Bot {token}", "Content-Type": "application/json"},
+    method="POST"
+)
+try:
+    with urllib.request.urlopen(req) as r:
+        print(f"Discord post OK — HTTP {r.status}")
+except urllib.error.HTTPError as e:
+    body = e.read().decode()
+    print(f"::error::Discord post failed HTTP {e.code}: {body}")
+    sys.exit(1)
+PYEOF
