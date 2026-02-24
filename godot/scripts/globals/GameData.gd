@@ -26,18 +26,22 @@ var core_phases: Dictionary = {}  # core_id (String) -> active phase (int)
 func _ready() -> void:
 	load_meta_progression()
 	load_run_state()
-	# Keep run-state in sync and save immediately on every change.
-	Events.on_jason_health_changed.connect(func(v: float) -> void:
-		current_hp_jason = v
-		save_run_state())
-	Events.on_tank_stability_changed.connect(func(v: float) -> void:
-		current_stability_nova = maxf(v, 0.0)
-		save_run_state())
+	Events.on_jason_health_changed.connect(_on_jason_hp)
+	Events.on_tank_stability_changed.connect(_on_nova_stability)
 	Events.on_world_shifted.connect(_on_world_shifted)
 	Events.on_run_ended.connect(_on_run_ended)
 
-
 # --- Signal Handlers ---
+
+func _on_jason_hp(v: float) -> void:
+	current_hp_jason = v
+	save_run_state()
+
+
+func _on_nova_stability(v: float) -> void:
+	current_stability_nova = v
+	save_run_state()
+
 
 func _on_world_shifted(new_phase: int) -> void:
 	core_phases["default"] = new_phase
