@@ -31,8 +31,12 @@ func _ready() -> void:
 	Events.on_tank_stability_changed.connect(func(v: float) -> void: current_stability_nova = v)
 	Events.on_world_shifted.connect(_on_world_shifted)
 	Events.on_run_ended.connect(_on_run_ended)
-	# Save whenever the game exits — covers Stop button, window close, and scene reloads.
-	tree_exiting.connect(save_run_state)
+	# Auto-save every 10 seconds — reliable across editor Stop and window close.
+	var timer := Timer.new()
+	timer.wait_time = 10.0
+	timer.autostart = true
+	timer.timeout.connect(save_run_state)
+	add_child(timer)
 
 
 # --- Signal Handlers ---

@@ -44,6 +44,9 @@ func _restore_from_save() -> void:
 	# Restore HP and stability from the last saved run state.
 	nova.stability = GameData.current_stability_nova
 	Events.on_tank_stability_changed.emit(nova.stability)
+	if nova.stability <= 0.0:
+		nova.is_stalled = true
+		Events.on_tank_stalled.emit()
 	jason.hp = GameData.current_hp_jason
 	Events.on_jason_health_changed.emit(jason.hp)
 
@@ -161,7 +164,7 @@ func _activate_pawn(pawn: Pawn) -> void:
 
 func _emergency_restart_nova() -> void:
 	# Restores 50 stability and re-enables N.O.V.A.
-	# The real Quick-Fix rhythm mini-game will replace this later.
+	# The real Quick-Fix rhythm mini-game will replace tdhis later.
 	nova.restore_stability(50.0)
 	_swap_to(Pawn.NOVA)
 
