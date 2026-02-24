@@ -32,7 +32,7 @@ func _ready() -> void:
 	Events.on_world_shifted.connect(_on_world_shifted)
 	Events.on_run_ended.connect(_on_run_ended)
 	# Save whenever the game exits — covers Stop button, window close, and scene reloads.
-	get_tree().tree_exiting.connect(save_run_state)
+	tree_exiting.connect(save_run_state)
 
 
 # --- Signal Handlers ---
