@@ -84,7 +84,7 @@ func load_meta_progression() -> void:
 		return
 	if parsed.has("meta"):
 		var meta: Dictionary = parsed["meta"]
-		unlocked_cores = meta.get("unlocked_cores", [])
+		unlocked_cores = Array(meta.get("unlocked_cores", []), TYPE_STRING, "", null)
 		phase_dust = meta.get("phase_dust", 0)
 		upgrade_levels = meta.get("upgrade_levels", {})
 
@@ -104,7 +104,7 @@ func load_run_state() -> void:
 		var run: Dictionary = parsed["run"]
 		current_hp_jason       = run.get("hp_jason", 30.0)
 		current_stability_nova = run.get("stability_nova", 100.0)
-		equipped_modules       = run.get("equipped_modules", [])
+		equipped_modules       = Array(run.get("equipped_modules", []), TYPE_STRING, "", null)
 		current_sector         = run.get("current_sector", "iron_wastes")
 	if parsed.has("world"):
 		var world: Dictionary = parsed["world"]
