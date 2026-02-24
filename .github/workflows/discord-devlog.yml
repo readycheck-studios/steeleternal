@@ -52,8 +52,16 @@ jobs:
               }]
             }')
 
-          curl -sf -X POST \
+          HTTP_STATUS=$(curl -s -o /tmp/discord_response.json -w "%{http_code}" -X POST \
             "https://discord.com/api/v10/channels/${CHANNEL_ID}/messages" \
             -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
             -H "Content-Type: application/json" \
-            -d "$PAYLOAD"
+            -d "$PAYLOAD")
+
+          echo "Discord API status: $HTTP_STATUS"
+          cat /tmp/discord_response.json
+
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+            echo "::error::Discord post failed with HTTP $HTTP_STATUS"
+            exit 1
+          fi
