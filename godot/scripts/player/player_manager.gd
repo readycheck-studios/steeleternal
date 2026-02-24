@@ -44,9 +44,6 @@ func _restore_from_save() -> void:
 	# Restore HP and stability from the last saved run state.
 	nova.stability = GameData.current_stability_nova
 	Events.on_tank_stability_changed.emit(nova.stability)
-	if nova.stability <= 0.0:
-		nova.is_stalled = true
-		Events.on_tank_stalled.emit()
 	jason.hp = GameData.current_hp_jason
 	Events.on_jason_health_changed.emit(jason.hp)
 

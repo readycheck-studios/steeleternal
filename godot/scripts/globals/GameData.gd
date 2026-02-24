@@ -26,17 +26,15 @@ var core_phases: Dictionary = {}  # core_id (String) -> active phase (int)
 func _ready() -> void:
 	load_meta_progression()
 	load_run_state()
-	# Keep run-state in sync with live game values via Events
-	Events.on_jason_health_changed.connect(func(v: float) -> void: current_hp_jason = v)
-	Events.on_tank_stability_changed.connect(func(v: float) -> void: current_stability_nova = v)
+	# Keep run-state in sync and save immediately on every change.
+	Events.on_jason_health_changed.connect(func(v: float) -> void:
+		current_hp_jason = v
+		save_run_state())
+	Events.on_tank_stability_changed.connect(func(v: float) -> void:
+		current_stability_nova = maxf(v, 0.0)
+		save_run_state())
 	Events.on_world_shifted.connect(_on_world_shifted)
 	Events.on_run_ended.connect(_on_run_ended)
-	# Auto-save every 10 seconds — reliable across editor Stop and window close.
-	var timer := Timer.new()
-	timer.wait_time = 10.0
-	timer.autostart = true
-	timer.timeout.connect(save_run_state)
-	add_child(timer)
 
 
 # --- Signal Handlers ---
@@ -62,8 +60,8 @@ func save_run_state() -> void:
 			"upgrade_levels": upgrade_levels,
 		},
 		"run": {
-			"hp_jason": current_hp_jason,
-			"stability_nova": current_stability_nova,
+			"hp_jason": maxf(current_hp_jason, 1.0),
+			"stability_nova": maxf(current_stability_nova, 1.0),
 			"equipped_modules": equipped_modules,
 			"current_sector": current_sector,
 		},
