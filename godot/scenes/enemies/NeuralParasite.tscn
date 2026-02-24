@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/neural_parasite.gd" id="1_np"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_np"]
+size = Vector2(14, 18)
+
+[node name="NeuralParasite" type="CharacterBody2D"]
+collision_layer = 64
+collision_mask = 39
+script = ExtResource("1_np")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_np")
+
+; Violet diamond — visually distinct from Grunt (rectangle) and Bulwark (armour polygon)
+[node name="Visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -10, 9, 0, 0, 10, -9, 0)
+color = Color(0.55, 0.10, 0.90, 1.0)
