@@ -21,6 +21,7 @@ const SHAKE_PIXELS: float = 8.0  # Max pixel offset at intensity 1.0
 
 # Jason must be within this radius of N.O.V.A. to remount or restart her.
 const MOUNT_RADIUS: float = 48.0
+const REMOUNT_HEAL: float = 10.0   # HP restored to Jason each time he boards N.O.V.A.
 
 
 func _ready() -> void:
@@ -122,6 +123,7 @@ func _swap_to(target: Pawn) -> void:
 		jason.visible = true
 		tether_handler.start_tracking()
 	else:
+		jason.heal(REMOUNT_HEAL)
 		jason.visible = false
 		tether_handler.stop_tracking()
 
