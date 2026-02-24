@@ -32,3 +32,6 @@ signal on_run_ended(cause: String)  # e.g. "jason_died", "nova_destroyed", "teth
 
 # --- Camera ---
 signal on_screen_shake(intensity: float)  # 0.0 to 1.0 normalised
+
+# --- Audio ---
+signal on_sfx_play_at(sfx_key: String, world_position: Vector2)  # Positional one-shot SFX

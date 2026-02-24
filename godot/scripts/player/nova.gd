@@ -106,6 +106,7 @@ func _fire_cannon() -> void:
 
 	var shake := main_weapon.screen_shake_intensity if main_weapon else 0.5
 	Events.on_screen_shake.emit(shake)
+	Events.on_sfx_play_at.emit("cannon_fire", weapon_hardpoint.global_position)
 
 
 # --- Stability ---

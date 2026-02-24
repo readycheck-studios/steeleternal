@@ -45,5 +45,6 @@ func _physics_process(delta: float) -> void:
 		# Damage enemies
 		if collider.collision_layer & 64 and collider.has_method("take_damage"):
 			collider.take_damage(damage)
+		Events.on_sfx_play_at.emit("cannon_impact", global_position)
 		queue_free()
 		return

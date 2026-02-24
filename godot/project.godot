@@ -24,6 +24,7 @@ config/icon="res://icon.svg"
 
 Events="*res://scripts/globals/Events.gd"
 GameData="*res://scripts/globals/GameData.gd"
+AudioManager="*res://scripts/audio/audio_manager.gd"
 
 [display]
 

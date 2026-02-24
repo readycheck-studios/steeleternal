@@ -102,6 +102,7 @@ func _fire_data_spike() -> void:
 	_spike_cooldown = SPIKE_COOLDOWN
 	_spike_draw_timer = SPIKE_VISUAL_TIME
 	queue_redraw()
+	Events.on_sfx_play_at.emit("data_spike", global_position)
 	# Synchronous shape query — fires instantly, catches enemies already in range
 	var params := PhysicsShapeQueryParameters2D.new()
 	var rect := RectangleShape2D.new()
