@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/void_walker.gd" id="1_vw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vw"]
+size = Vector2(16, 24)
+
+; Starts with collision_layer=0 (intangible) — script sets it dynamically on world shift.
+[node name="VoidWalker" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_vw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vw")
+
+; Deep violet diamond — larger than Neural Parasite, starts ghostly (script sets alpha).
+[node name="Visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -16, 14, 0, 0, 16, -14, 0)
+color = Color(0.40, 0.00, 0.70, 1.0)

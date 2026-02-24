@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/PlayerRoot.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/quantum/phase_body.gd" id="6_phase_body"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/Bulwark.tscn" id="7_bulwark"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/NeuralParasite.tscn" id="8_parasite"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/VoidWalker.tscn" id="9_voidwalker"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(1920, 32)
@@ -181,3 +182,8 @@ position = Vector2(580, 300)
 ; NP_2 lurks past the phase wall — reachable after Core activation, tests Pilot combat
 [node name="NeuralParasite_2" parent="." instance=ExtResource("8_parasite")]
 position = Vector2(1150, 300)
+
+; Void-Walker — intangible (ghost) in Phase A, materialises when Core is activated.
+; Positioned between the terminal and Core so hacking triggers an immediate threat.
+[node name="VoidWalker_1" parent="." instance=ExtResource("9_voidwalker")]
+position = Vector2(820, 300)
