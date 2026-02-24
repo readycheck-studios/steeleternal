@@ -66,10 +66,11 @@ shape = SubResource("RectangleShape2D_wall")
 ; Platforms — spread across 1920px for tank + pilot to traverse
 [node name="Platform_A" type="StaticBody2D" parent="WorldGeometry"]
 collision_layer = 1
-position = Vector2(320, 280)
+position = Vector2(320, 255)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_A"]
 shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
 
 [node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_A"]
 polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
@@ -77,10 +78,11 @@ color = Color(0.200, 0.200, 0.250, 1.0)
 
 [node name="Platform_B" type="StaticBody2D" parent="WorldGeometry"]
 collision_layer = 1
-position = Vector2(640, 220)
+position = Vector2(640, 185)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_B"]
 shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
 
 [node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_B"]
 polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
@@ -88,10 +90,11 @@ color = Color(0.200, 0.200, 0.250, 1.0)
 
 [node name="Platform_C" type="StaticBody2D" parent="WorldGeometry"]
 collision_layer = 1
-position = Vector2(960, 280)
+position = Vector2(960, 255)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_C"]
 shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
 
 [node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_C"]
 polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
@@ -99,10 +102,11 @@ color = Color(0.200, 0.200, 0.250, 1.0)
 
 [node name="Platform_D" type="StaticBody2D" parent="WorldGeometry"]
 collision_layer = 1
-position = Vector2(1280, 220)
+position = Vector2(1280, 185)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_D"]
 shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
 
 [node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_D"]
 polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
@@ -110,10 +114,11 @@ color = Color(0.200, 0.200, 0.250, 1.0)
 
 [node name="Platform_E" type="StaticBody2D" parent="WorldGeometry"]
 collision_layer = 1
-position = Vector2(1600, 280)
+position = Vector2(1600, 255)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_E"]
 shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
 
 [node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_E"]
 polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
@@ -143,7 +148,7 @@ position = Vector2(700, 316)
 
 ; Quantum Core — sits on top of Platform_C. N.O.V.A. parks below; Jason jumps up to hack.
 [node name="QuantumCore" parent="." instance=ExtResource("5_quantum_core")]
-position = Vector2(960, 255)
+position = Vector2(960, 230)
 
 ; Phase A wall — violet barrier blocking the right section in Phase A (default)
 [node name="PhaseWall_A" type="StaticBody2D" parent="."]
