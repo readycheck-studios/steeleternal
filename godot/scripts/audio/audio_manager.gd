@@ -50,7 +50,7 @@ func _load_streams() -> void:
 		"cannon_fire", "cannon_impact", "data_spike",
 		"tether_strain_loop", "hack_success", "phase_shift", "tank_stalled",
 	]
-	for sfx_name in names:
+	for sfx_name: String in names:
 		var path := SFX_PATH + sfx_name + ".ogg"
 		_sfx[sfx_name] = load(path) if ResourceLoader.exists(path) else null
 
