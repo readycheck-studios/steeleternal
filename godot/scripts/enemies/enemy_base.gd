@@ -118,6 +118,8 @@ func _state_attack(_delta: float) -> void:
 # --- Damage ---
 
 func _check_contact_damage() -> void:
+	if state == State.STUNNED:
+		return  # Stunned enemies are temporarily harmless to touch
 	if _contact_timer > 0.0:
 		return
 	for i in get_slide_collision_count():

@@ -54,6 +54,27 @@ func _on_vent_hacked() -> void:
 		state = State.CHASE  # Re-aggro now that it's exposed
 
 
+# --- Contact damage — front face only, back is a safe zone for hacking ---
+
+func _check_contact_damage() -> void:
+	if state == State.STUNNED or _contact_timer > 0.0:
+		return
+	for i in get_slide_collision_count():
+		var col := get_slide_collision(i)
+		var collider := col.get_collider()
+		if collider == null:
+			continue
+		var layer: int = collider.collision_layer
+		if (layer & 2 or layer & 4) and collider.has_method("take_hit"):
+			# Only deal damage if the collider is on the front (shield) side.
+			# Behind the Bulwark is safe — that's where Jason needs to be.
+			var side := signf(collider.global_position.x - global_position.x)
+			if side == _facing or side == 0.0:
+				collider.take_hit(contact_damage)
+				_contact_timer = CONTACT_DAMAGE_INTERVAL
+				break
+
+
 # --- Attack override — slow relentless push instead of a lunge ---
 
 func _state_attack(_delta: float) -> void:

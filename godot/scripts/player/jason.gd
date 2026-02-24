@@ -14,7 +14,7 @@ const JUMP_BUFFER_TIME: float = 0.1
 const MAX_HP: float = 30.0
 
 const SPIKE_COOLDOWN: float = 0.8       # Seconds between Data-Spike uses
-const SPIKE_STUN_DURATION: float = 3.0  # How long the target is stunned
+const SPIKE_STUN_DURATION: float = 5.0  # How long the target is stunned
 const SPIKE_VISUAL_TIME: float = 0.20   # How long the amber flash stays visible
 const SPIKE_COLOR := Color(0.961, 0.620, 0.043, 0.80)  # Amber flash
 
