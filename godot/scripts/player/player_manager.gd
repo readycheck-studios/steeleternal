@@ -21,7 +21,10 @@ const SHAKE_PIXELS: float = 8.0  # Max pixel offset at intensity 1.0
 
 # Jason must be within this radius of N.O.V.A. to remount or restart her.
 const MOUNT_RADIUS: float = 48.0
-const REMOUNT_HEAL: float = 10.0   # HP restored to Jason each time he boards N.O.V.A.
+const REMOUNT_HEAL_PCT: float = 0.10      # 10% of MAX_HP restored on remount
+const REMOUNT_HEAL_COOLDOWN: float = 60.0 # Seconds before another remount heal is available
+
+var _remount_heal_cooldown: float = 0.0   # Counts down; heal only triggers when 0
 
 
 func _ready() -> void:
@@ -44,6 +47,8 @@ func _emit_initial_pawn() -> void:
 func _process(delta: float) -> void:
 	camera_manager.global_position = _get_pawn_node(active_pawn).global_position
 	_update_screen_shake(delta)
+	if _remount_heal_cooldown > 0.0:
+		_remount_heal_cooldown = maxf(_remount_heal_cooldown - delta, 0.0)
 
 
 func _update_screen_shake(delta: float) -> void:
@@ -123,7 +128,9 @@ func _swap_to(target: Pawn) -> void:
 		jason.visible = true
 		tether_handler.start_tracking()
 	else:
-		jason.heal(REMOUNT_HEAL)
+		if _remount_heal_cooldown <= 0.0:
+			jason.heal(jason.MAX_HP * REMOUNT_HEAL_PCT)
+			_remount_heal_cooldown = REMOUNT_HEAL_COOLDOWN
 		jason.visible = false
 		tether_handler.stop_tracking()
 
