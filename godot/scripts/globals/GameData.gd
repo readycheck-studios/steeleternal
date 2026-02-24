@@ -25,6 +25,25 @@ var core_phases: Dictionary = {}  # core_id (String) -> active phase (int)
 
 func _ready() -> void:
 	load_meta_progression()
+	load_run_state()
+	# Keep run-state in sync with live game values via Events
+	Events.on_jason_health_changed.connect(func(v: float) -> void: current_hp_jason = v)
+	Events.on_tank_stability_changed.connect(func(v: float) -> void: current_stability_nova = v)
+	Events.on_world_shifted.connect(_on_world_shifted)
+	Events.on_run_ended.connect(_on_run_ended)
+
+
+# --- Signal Handlers ---
+
+func _on_world_shifted(new_phase: int) -> void:
+	core_phases["default"] = new_phase
+	save_run_state()
+
+
+func _on_run_ended(_cause: String) -> void:
+	# Wipe run data but keep meta-progression, then persist.
+	clear_run_state()
+	save_run_state()
 
 
 # --- Save / Load ---
@@ -68,6 +87,28 @@ func load_meta_progression() -> void:
 		unlocked_cores = meta.get("unlocked_cores", [])
 		phase_dust = meta.get("phase_dust", 0)
 		upgrade_levels = meta.get("upgrade_levels", {})
+
+
+func load_run_state() -> void:
+	if not FileAccess.file_exists(SAVE_PATH):
+		return
+	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if not file:
+		return
+	var text := file.get_as_text()
+	file.close()
+	var parsed = JSON.parse_string(text)
+	if parsed == null or not parsed is Dictionary:
+		return
+	if parsed.has("run"):
+		var run: Dictionary = parsed["run"]
+		current_hp_jason       = run.get("hp_jason", 30.0)
+		current_stability_nova = run.get("stability_nova", 100.0)
+		equipped_modules       = run.get("equipped_modules", [])
+		current_sector         = run.get("current_sector", "iron_wastes")
+	if parsed.has("world"):
+		var world: Dictionary = parsed["world"]
+		core_phases = world.get("core_phases", {})
 
 
 func clear_run_state() -> void:

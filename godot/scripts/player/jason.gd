@@ -12,7 +12,6 @@ const GRAVITY_MULTIPLIER: float = 1.0
 const COYOTE_TIME: float = 0.15
 const JUMP_BUFFER_TIME: float = 0.1
 const MAX_HP: float = 30.0
-const REGEN_RATE: float = 2.0   # HP per second while boarded
 
 const SPIKE_COOLDOWN: float = 0.8       # Seconds between Data-Spike uses
 const SPIKE_STUN_DURATION: float = 5.0  # How long the target is stunned
@@ -21,7 +20,6 @@ const SPIKE_COLOR := Color(0.961, 0.620, 0.043, 0.80)  # Amber flash
 
 var hp: float = MAX_HP
 var is_hacking: bool = false
-var _boarded: bool = true   # True while Jason is inside N.O.V.A.
 
 var _coyote_timer: float = 0.0
 var _jump_buffer_timer: float = 0.0
@@ -37,18 +35,9 @@ func _ready() -> void:
 	collision_layer = 4   # Layer 3
 	collision_mask = 81   # World(1) + NeuralVents(16) + Enemies(64)
 	visible = false
-	Events.on_pawn_swapped.connect(_on_pawn_swapped)
-
-
-func _on_pawn_swapped(active_node: Node2D) -> void:
-	_boarded = (active_node != self)
 
 
 func _physics_process(delta: float) -> void:
-	if _boarded:
-		if hp < MAX_HP:
-			heal(REGEN_RATE * delta)
-		return
 	_update_timers(delta)
 	_apply_gravity(delta)
 	_handle_movement()

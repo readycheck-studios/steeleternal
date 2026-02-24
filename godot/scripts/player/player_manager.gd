@@ -29,6 +29,7 @@ var _regen_timer: float = 0.0
 func _ready() -> void:
 	tether_handler.setup(nova, jason)
 	_activate_pawn(Pawn.NOVA)
+	_restore_from_save()
 	Events.on_tank_stalled.connect(_on_tank_stalled)
 	Events.on_run_ended.connect(_on_run_ended)
 	Events.on_screen_shake.connect(_on_screen_shake)
@@ -37,6 +38,14 @@ func _ready() -> void:
 	Events.on_hack_failed.connect(func(): _is_hacking = false; jason.is_hacking = false)
 	# Deferred so all enemy _ready() calls finish connecting before this fires.
 	call_deferred("_emit_initial_pawn")
+
+
+func _restore_from_save() -> void:
+	# Restore HP and stability from the last saved run state.
+	nova.stability = GameData.current_stability_nova
+	Events.on_tank_stability_changed.emit(nova.stability)
+	jason.hp = GameData.current_hp_jason
+	Events.on_jason_health_changed.emit(jason.hp)
 
 
 func _emit_initial_pawn() -> void:
