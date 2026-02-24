@@ -4,9 +4,9 @@
 # On a successful Synaptic Bypass, fires vent_hacked → Bulwark loses armor.
 extends Node2D
 
-const HACK_AMP:   float = 0.80
-const HACK_FREQ:  float = 3.50
-const HACK_PHASE: float = 2.10
+const HACK_AMP:   float = 0.70
+const HACK_FREQ:  float = 2.50
+const HACK_PHASE: float = 1.00
 
 # Stun refreshed every tick while the hack is active — Bulwark stays frozen
 # for the entire hack regardless of how long it takes.
