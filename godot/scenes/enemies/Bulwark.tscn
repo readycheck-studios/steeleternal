@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/bulwark.gd" id="1_bulwark"]
+[ext_resource type="Script" path="res://scripts/enemies/cooling_vent.gd" id="2_vent"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HackingMinigame.tscn" id="3_minigame"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bulwark"]
+size = Vector2(28, 40)
+
+[node name="Bulwark" type="CharacterBody2D"]
+collision_layer = 64
+collision_mask = 39
+script = ExtResource("1_bulwark")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bulwark")
+
+; Dark iron body — wide and tall
+[node name="BodySprite" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-14, -20, 14, -20, 14, 20, -14, 20)
+color = Color(0.22, 0.22, 0.28, 1.0)
+
+; Amber shield panel — repositioned each frame to stay on front face
+[node name="ShieldFront" type="Polygon2D" parent="."]
+position = Vector2(14, 0)
+polygon = PackedVector2Array(-4, -18, 4, -18, 4, 18, -4, 18)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+; Cooling vent — repositioned each frame to stay on back face
+[node name="CoolingVent" type="Node2D" parent="."]
+position = Vector2(-20, 0)
+script = ExtResource("2_vent")
+minigame_scene = ExtResource("3_minigame")
+
+; Violet diamond — visible indicator of hackable vent
+[node name="VentVisual" type="Polygon2D" parent="CoolingVent"]
+polygon = PackedVector2Array(0, -6, 6, 0, 0, 6, -6, 0)
+color = Color(0.38, 0.10, 0.80, 1.0)
