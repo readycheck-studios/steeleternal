@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="3392" height="392"
+     viewBox="0 0 3392 392">
+  <defs>
+    <style>text { font-family: Inter, system-ui, sans-serif; }</style>
+  </defs>
+
+<rect x="0" y="0" width="640" height="360" fill="#111119" fill-opacity="1.0"/>
+<text x="220" y="181" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#33333F" fill-opacity="0.3" text-anchor="start">Game World  640×360</text>
+<rect x="8" y="8" width="192" height="50" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="12" y="20" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="700" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">N·O·V·A</text>
+<text x="12" y="30" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.55" text-anchor="start">STABILITY</text>
+<rect x="12" y="32" width="152" height="8" fill="#080810" fill-opacity="0.8"/>
+<rect x="12" y="32" width="152" height="8" fill="#F59E0B" fill-opacity="1.0"/>
+<text x="167" y="39" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">100</text>
+<text x="181" y="38" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#F59E0B" fill-opacity="0.38" text-anchor="start">/100</text>
+<rect x="204" y="10" width="119" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="208" y="19" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → StabilityBar</text>
+<rect x="8" y="62" width="112" height="17" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="12" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◆</text>
+<text x="24" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">12</text>
+<text x="38" y="71" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.5" text-anchor="start">PHASE DUST</text>
+<rect x="124" y="63" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="128" y="72" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → dust_count</text>
+<text x="8" y="347" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◉  TANK MODE</text>
+<rect x="112" y="337" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="116" y="346" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → mode_label</text>
+<rect x="0" y="0" width="640" height="360" fill="#6119CC" fill-opacity="0.025" stroke="#6119CC" stroke-opacity="0.18" stroke-width="1" stroke-dasharray="6,4"/>
+<text x="320" y="386" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#33333F" fill-opacity="1.0" text-anchor="middle">01 — Tank Mode</text>
+
+<rect x="688" y="0" width="640" height="360" fill="#111119" fill-opacity="1.0"/>
+<text x="908" y="181" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#33333F" fill-opacity="0.3" text-anchor="start">Game World  640×360</text>
+<rect x="696" y="8" width="192" height="50" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="700" y="20" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="700" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">N·O·V·A</text>
+<text x="700" y="30" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.55" text-anchor="start">STABILITY</text>
+<rect x="700" y="32" width="152" height="8" fill="#080810" fill-opacity="0.8"/>
+<rect x="700" y="32" width="114" height="8" fill="#F59E0B" fill-opacity="1.0"/>
+<text x="855" y="39" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">75</text>
+<text x="869" y="38" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#F59E0B" fill-opacity="0.38" text-anchor="start">/100</text>
+<rect x="892" y="10" width="119" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="896" y="19" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → StabilityBar</text>
+<rect x="696" y="62" width="112" height="17" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="700" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◆</text>
+<text x="712" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">7</text>
+<text x="726" y="71" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.5" text-anchor="start">PHASE DUST</text>
+<rect x="812" y="63" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="816" y="72" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → dust_count</text>
+<rect x="696" y="83" width="192" height="36" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="700" y="95" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="700" fill="#40A5F5" fill-opacity="1.0" text-anchor="start">PILOT</text>
+<text x="700" y="104" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#40A5F5" fill-opacity="0.55" text-anchor="start">HP</text>
+<rect x="700" y="106" width="152" height="8" fill="#080810" fill-opacity="0.8"/>
+<rect x="700" y="106" width="111" height="8" fill="#40A5F5" fill-opacity="1.0"/>
+<text x="855" y="113" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="400" fill="#40A5F5" fill-opacity="1.0" text-anchor="start">22</text>
+<text x="866" y="112" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#40A5F5" fill-opacity="0.38" text-anchor="start">/30</text>
+<rect x="892" y="83" width="259" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="896" y="92" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → JasonPanel (visible in Pilot Mode only)</text>
+<line x1="808" y1="330" x2="1208" y2="330" stroke="#F59E0B" stroke-opacity="0.28" stroke-width="1" stroke-dasharray="6,4"/>
+<text x="838" y="339" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#F59E0B" fill-opacity="0.38" text-anchor="start">← 400px Neural Tether max →</text>
+<text x="696" y="347" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◉  PILOT MODE</text>
+<rect x="800" y="337" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="804" y="346" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → mode_label</text>
+<rect x="688" y="0" width="640" height="360" fill="#6119CC" fill-opacity="0.025" stroke="#6119CC" stroke-opacity="0.18" stroke-width="1" stroke-dasharray="6,4"/>
+<text x="1008" y="386" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#33333F" fill-opacity="1.0" text-anchor="middle">02 — Pilot Mode</text>
+
+<rect x="1376" y="0" width="640" height="360" fill="#111119" fill-opacity="1.0"/>
+<text x="1596" y="181" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#33333F" fill-opacity="0.3" text-anchor="start">Game World  640×360</text>
+<rect x="1384" y="8" width="192" height="50" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="1388" y="20" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="700" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">N·O·V·A</text>
+<text x="1388" y="30" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.55" text-anchor="start">STABILITY</text>
+<rect x="1388" y="32" width="152" height="8" fill="#080810" fill-opacity="0.8"/>
+<rect x="1388" y="32" width="91" height="8" fill="#F59E0B" fill-opacity="1.0"/>
+<text x="1543" y="39" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">60</text>
+<text x="1557" y="38" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#F59E0B" fill-opacity="0.38" text-anchor="start">/100</text>
+<rect x="1580" y="10" width="119" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="1584" y="19" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → StabilityBar</text>
+<rect x="1384" y="62" width="112" height="17" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="1388" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◆</text>
+<text x="1400" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">7</text>
+<text x="1414" y="71" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.5" text-anchor="start">PHASE DUST</text>
+<rect x="1500" y="63" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="1504" y="72" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → dust_count</text>
+<rect x="1384" y="83" width="192" height="36" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="1388" y="95" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="700" fill="#40A5F5" fill-opacity="1.0" text-anchor="start">PILOT</text>
+<text x="1388" y="104" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#40A5F5" fill-opacity="0.55" text-anchor="start">HP</text>
+<rect x="1388" y="106" width="152" height="8" fill="#080810" fill-opacity="0.8"/>
+<rect x="1388" y="106" width="65" height="8" fill="#40A5F5" fill-opacity="1.0"/>
+<text x="1543" y="113" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="400" fill="#40A5F5" fill-opacity="1.0" text-anchor="start">13</text>
+<text x="1554" y="112" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#40A5F5" fill-opacity="0.38" text-anchor="start">/30</text>
+<rect x="1580" y="83" width="259" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="1584" y="92" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → JasonPanel (visible in Pilot Mode only)</text>
+<line x1="1496" y1="330" x2="1896" y2="330" stroke="#F59E0B" stroke-opacity="0.28" stroke-width="1" stroke-dasharray="6,4"/>
+<text x="1526" y="339" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#F59E0B" fill-opacity="0.38" text-anchor="start">← 400px Neural Tether max →</text>
+<text x="1384" y="347" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◉  PILOT MODE</text>
+<rect x="1488" y="337" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="1492" y="346" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → mode_label</text>
+<rect x="1376" y="0" width="640" height="360" fill="#6119CC" fill-opacity="0.28" stroke="#6119CC" stroke-opacity="0.55" stroke-width="1" stroke-dasharray="6,4"/>
+<text x="1384" y="111" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#6119CC" fill-opacity="0.75" text-anchor="start">neural_glitch.gdshader  interference_strength=0.28</text>
+<text x="1696" y="386" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#33333F" fill-opacity="1.0" text-anchor="middle">03 — Danger Zone</text>
+
+<rect x="2064" y="0" width="640" height="360" fill="#111119" fill-opacity="1.0"/>
+<text x="2284" y="181" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#33333F" fill-opacity="0.3" text-anchor="start">Game World  640×360</text>
+<rect x="2072" y="8" width="192" height="50" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="2076" y="20" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="700" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">N·O·V·A</text>
+<text x="2076" y="30" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.55" text-anchor="start">STABILITY</text>
+<rect x="2076" y="32" width="152" height="8" fill="#080810" fill-opacity="0.8"/>
+<rect x="2076" y="32" width="1" height="8" fill="#F59E0B" fill-opacity="1.0"/>
+<text x="2231" y="39" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">0</text>
+<text x="2245" y="38" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#F59E0B" fill-opacity="0.38" text-anchor="start">/100</text>
+<rect x="2268" y="10" width="119" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="2272" y="19" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → StabilityBar</text>
+<rect x="2072" y="62" width="112" height="17" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="2076" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◆</text>
+<text x="2088" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">3</text>
+<text x="2102" y="71" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.5" text-anchor="start">PHASE DUST</text>
+<rect x="2188" y="63" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="2192" y="72" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → dust_count</text>
+<text x="2072" y="347" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◉  TANK MODE</text>
+<rect x="2176" y="337" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="2180" y="346" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → mode_label</text>
+<rect x="2256" y="98" width="256" height="26" fill="#111119" fill-opacity="0.92" rx="2" ry="2"/>
+<text x="2266" y="112" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">⚠  N·O·V·A  STALLED</text>
+<rect x="2256" y="128" width="207" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="2260" y="137" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → stalled_alert (Stability = 0)</text>
+<rect x="2064" y="0" width="640" height="360" fill="#6119CC" fill-opacity="0.025" stroke="#6119CC" stroke-opacity="0.18" stroke-width="1" stroke-dasharray="6,4"/>
+<text x="2384" y="386" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#33333F" fill-opacity="1.0" text-anchor="middle">04 — Stalled</text>
+
+<rect x="2752" y="0" width="640" height="360" fill="#111119" fill-opacity="1.0"/>
+<text x="2972" y="181" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#33333F" fill-opacity="0.3" text-anchor="start">Game World  640×360</text>
+<rect x="2760" y="8" width="192" height="50" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="2764" y="20" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="700" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">N·O·V·A</text>
+<text x="2764" y="30" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.55" text-anchor="start">STABILITY</text>
+<rect x="2764" y="32" width="152" height="8" fill="#080810" fill-opacity="0.8"/>
+<rect x="2764" y="32" width="1" height="8" fill="#F59E0B" fill-opacity="1.0"/>
+<text x="2919" y="39" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">0</text>
+<text x="2933" y="38" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#F59E0B" fill-opacity="0.38" text-anchor="start">/100</text>
+<rect x="2956" y="10" width="119" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="2960" y="19" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → StabilityBar</text>
+<rect x="2760" y="62" width="112" height="17" fill="#111119" fill-opacity="0.88" rx="2" ry="2"/>
+<text x="2764" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◆</text>
+<text x="2776" y="72" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">3</text>
+<text x="2790" y="71" font-family="Inter, system-ui, sans-serif" font-size="6" font-weight="400" fill="#F59E0B" fill-opacity="0.5" text-anchor="start">PHASE DUST</text>
+<rect x="2876" y="63" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="2880" y="72" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → dust_count</text>
+<text x="2760" y="347" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#F59E0B" fill-opacity="1.0" text-anchor="start">◉  TANK MODE</text>
+<rect x="2864" y="337" width="108" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="2868" y="346" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → mode_label</text>
+<rect x="2848" y="160" width="448" height="26" fill="#111119" fill-opacity="0.92" rx="2" ry="2"/>
+<text x="2858" y="173" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#E51919" fill-opacity="1.0" text-anchor="start">✖  RUN FAILED  —  N·O·V·A DESTROYED</text>
+<rect x="2848" y="190" width="140" height="14" fill="none" fill-opacity="1.0" stroke="#33333F" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="2852" y="199" font-family="Inter, system-ui, sans-serif" font-size="7" font-weight="400" fill="#33333F" fill-opacity="0.65" text-anchor="start">hud.gd → run_failed_label</text>
+<rect x="2752" y="0" width="640" height="360" fill="#6119CC" fill-opacity="0.025" stroke="#6119CC" stroke-opacity="0.18" stroke-width="1" stroke-dasharray="6,4"/>
+<text x="3072" y="386" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#33333F" fill-opacity="1.0" text-anchor="middle">05 — Run Failed</text>
+
+</svg>
