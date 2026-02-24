@@ -7,7 +7,7 @@
 extends CharacterBody2D
 class_name EnemyBase
 
-enum State { IDLE, PATROL, CHASE, ATTACK, DEAD }
+enum State { IDLE, PATROL, CHASE, ATTACK, STUNNED, DEAD }
 
 @export var max_hp: float = 30.0
 @export var move_speed: float = 60.0
@@ -23,9 +23,12 @@ var patrol_direction: float = 1.0
 const PATROL_FLIP_TIME: float = 2.0
 const CONTACT_DAMAGE_INTERVAL: float = 0.5
 const GRAVITY_MULT: float = 1.0
+const STUN_TINT := Color(0.35, 0.70, 1.0, 1.0)  # Blue-white when stunned
 
 var _patrol_timer: float = 0.0
 var _contact_timer: float = 0.0
+var _stun_timer: float = 0.0
+var _pre_stun_state: State = State.PATROL
 var _gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 
@@ -65,6 +68,15 @@ func _tick_state(delta: float) -> void:
 		State.PATROL:  _state_patrol(delta)
 		State.CHASE:   _state_chase(delta)
 		State.ATTACK:  _state_attack(delta)
+		State.STUNNED: _state_stunned(delta)
+
+
+func _state_stunned(delta: float) -> void:
+	velocity.x = 0.0
+	_stun_timer = maxf(_stun_timer - delta, 0.0)
+	if _stun_timer <= 0.0:
+		modulate = Color.WHITE
+		state = _pre_stun_state
 
 
 func _state_idle(_delta: float) -> void:
@@ -118,6 +130,16 @@ func _check_contact_damage() -> void:
 			collider.take_hit(contact_damage)
 			_contact_timer = CONTACT_DAMAGE_INTERVAL
 			break
+
+
+func stun(duration: float) -> void:
+	if state == State.DEAD or state == State.STUNNED:
+		return
+	_pre_stun_state = state
+	_stun_timer = duration
+	state = State.STUNNED
+	velocity.x = 0.0
+	modulate = STUN_TINT
 
 
 func take_damage(amount: float) -> void:

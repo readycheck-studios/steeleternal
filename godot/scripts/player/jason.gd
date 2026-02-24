@@ -13,12 +13,20 @@ const COYOTE_TIME: float = 0.15
 const JUMP_BUFFER_TIME: float = 0.1
 const MAX_HP: float = 30.0
 
+const SPIKE_COOLDOWN: float = 0.8      # Seconds between Data-Spike uses
+const SPIKE_ACTIVE_TIME: float = 0.15  # How long the hitbox stays live
+const SPIKE_STUN_DURATION: float = 3.0 # How long the target is stunned
+
 var hp: float = MAX_HP
 var is_hacking: bool = false
 
 var _coyote_timer: float = 0.0
 var _jump_buffer_timer: float = 0.0
 var _was_on_floor: bool = false
+var _facing: float = 1.0        # 1.0 = right, -1.0 = left
+var _spike_cooldown: float = 0.0
+var _spike_active: float = 0.0
+var _spike_hitbox: Area2D
 
 var _gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -27,6 +35,21 @@ func _ready() -> void:
 	collision_layer = 4   # Layer 3
 	collision_mask = 81   # World(1) + NeuralVents(16) + Enemies(64)
 	visible = false
+	_create_spike_hitbox()
+
+
+func _create_spike_hitbox() -> void:
+	_spike_hitbox = Area2D.new()
+	_spike_hitbox.collision_layer = 0
+	_spike_hitbox.collision_mask = 64  # Enemies only
+	_spike_hitbox.monitoring = false
+	var shape_node := CollisionShape2D.new()
+	var rect := RectangleShape2D.new()
+	rect.size = Vector2(24, 18)
+	shape_node.shape = rect
+	_spike_hitbox.add_child(shape_node)
+	add_child(_spike_hitbox)
+	_spike_hitbox.body_entered.connect(_on_spike_hit)
 
 
 func _physics_process(delta: float) -> void:
@@ -34,6 +57,7 @@ func _physics_process(delta: float) -> void:
 	_apply_gravity(delta)
 	_handle_movement()
 	_handle_jump()
+	_handle_data_spike(delta)
 	move_and_slide()
 	_was_on_floor = is_on_floor()
 
@@ -62,6 +86,8 @@ func _handle_movement() -> void:
 		velocity.x = 0.0
 		return
 	var dir := Input.get_axis("p_move_left", "p_move_right")
+	if dir != 0.0:
+		_facing = signf(dir)
 	velocity.x = dir * MOVE_SPEED
 
 
@@ -73,6 +99,35 @@ func _handle_jump() -> void:
 		velocity.y = JUMP_VELOCITY
 		_coyote_timer = 0.0
 		_jump_buffer_timer = 0.0
+
+
+# --- Data-Spike ---
+
+func _handle_data_spike(delta: float) -> void:
+	_spike_cooldown = maxf(_spike_cooldown - delta, 0.0)
+	if _spike_active > 0.0:
+		_spike_active -= delta
+		if _spike_active <= 0.0:
+			_spike_hitbox.monitoring = false
+		return
+	if _spike_cooldown <= 0.0 and not is_hacking \
+			and Input.is_action_just_pressed("p_attack"):
+		_fire_data_spike()
+
+
+func _fire_data_spike() -> void:
+	# Centre the hitbox 20px in front of Jason at chest height
+	_spike_hitbox.position = Vector2(_facing * 20.0, -6.0)
+	_spike_hitbox.monitoring = true
+	_spike_active = SPIKE_ACTIVE_TIME
+	_spike_cooldown = SPIKE_COOLDOWN
+
+
+func _on_spike_hit(body: Node) -> void:
+	if body.has_method("stun"):
+		body.stun(SPIKE_STUN_DURATION)
+		Events.on_data_spike_hit.emit()
+		Events.on_screen_shake.emit(0.25)
 
 
 # --- Health ---
