@@ -135,9 +135,12 @@ func _check_contact_damage() -> void:
 
 
 func stun(duration: float) -> void:
-	if state == State.DEAD or state == State.STUNNED:
+	if state == State.DEAD:
 		return
-	_pre_stun_state = state
+	# Allow refreshing an active stun — only save pre_stun_state on first entry
+	# so we always return to the correct state when it expires.
+	if state != State.STUNNED:
+		_pre_stun_state = state
 	_stun_timer = duration
 	state = State.STUNNED
 	velocity.x = 0.0
