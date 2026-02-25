@@ -42,9 +42,10 @@ func start_hack(jason_node: Node2D) -> void:
 	var mg: Node2D = minigame_scene.instantiate()
 	jason_node.add_child(mg)
 	mg.position = Vector2(0, -88)
-	mg.setup(HACK_AMP, HACK_FREQ, HACK_PHASE)
+	mg.setup(HACK_AMP, HACK_FREQ, HACK_PHASE, 2)
 	mg.hack_succeeded.connect(_on_hack_succeeded)
 	mg.hack_cancelled.connect(_on_hack_cancelled)
+	mg.firewall_triggered.connect(_on_firewall_triggered)
 
 
 func _on_hack_succeeded() -> void:
@@ -57,3 +58,15 @@ func _on_hack_succeeded() -> void:
 func _on_hack_cancelled() -> void:
 	_hacking = false
 	Events.on_hack_failed.emit()
+
+
+const FIREWALL_ALERT_RADIUS: float = 400.0
+
+func _on_firewall_triggered() -> void:
+	# Alert nearby enemies — the Bulwark itself is stunned, but other enemies in range engage.
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		if enemy == get_parent():
+			continue  # Don't un-stun the Bulwark being hacked
+		if enemy.has_method("alert"):
+			if global_position.distance_to(enemy.global_position) <= FIREWALL_ALERT_RADIUS:
+				enemy.alert()

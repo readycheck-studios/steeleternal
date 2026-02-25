@@ -81,9 +81,10 @@ func start_hack(jason_node: Node2D) -> void:
 	var mg: Node2D = minigame_scene.instantiate()
 	jason_node.add_child(mg)
 	mg.position = Vector2(0, -88)
-	mg.setup(target_amplitude, target_frequency, target_phase)
+	mg.setup(target_amplitude, target_frequency, target_phase, _hack_difficulty)
 	mg.hack_succeeded.connect(_on_hack_succeeded)
 	mg.hack_cancelled.connect(_on_hack_cancelled)
+	mg.firewall_triggered.connect(_on_firewall_triggered)
 
 	prompt_label.visible = false
 
@@ -105,6 +106,15 @@ func _on_hack_succeeded() -> void:
 func _on_hack_cancelled() -> void:
 	Events.on_hack_failed.emit()
 	show_prompt(true)
+
+
+const FIREWALL_ALERT_RADIUS: float = 400.0
+
+func _on_firewall_triggered() -> void:
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		if enemy.has_method("alert"):
+			if global_position.distance_to(enemy.global_position) <= FIREWALL_ALERT_RADIUS:
+				enemy.alert()
 
 
 func _update_visuals() -> void:

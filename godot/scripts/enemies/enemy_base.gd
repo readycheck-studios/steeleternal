@@ -36,6 +36,7 @@ func _ready() -> void:
 	collision_layer = 64   # Layer 7
 	collision_mask = 39    # World(1) + NOVA(2) + Jason(4) + Projectiles(32)
 	hp = max_hp
+	add_to_group("enemies")
 	Events.on_pawn_swapped.connect(_on_pawn_swapped)
 	_on_enemy_ready()
 
@@ -192,6 +193,13 @@ func _target_in_range(radius: float) -> bool:
 	if not _has_valid_target():
 		return false
 	return global_position.distance_to(target.global_position) <= radius
+
+
+# Force CHASE state regardless of detection radius — used by firewall alerts.
+func alert() -> void:
+	if state == State.DEAD or state == State.STUNNED:
+		return
+	_transition_state(State.CHASE)
 
 
 func _on_pawn_swapped(active_node: Node2D) -> void:
