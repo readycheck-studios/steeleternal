@@ -29,6 +29,9 @@ const GLOW_PHASE_A  := Color(0.50, 0.70, 1.00, 0.60)
 const GLOW_PHASE_B  := Color(1.00, 0.80, 0.20, 0.60)
 
 var _power_flash_timer: float = 0.0
+var _hacking_jason: Node2D = null
+
+const FIREWALL_DAMAGE: float = 6.0
 
 
 func _ready() -> void:
@@ -76,6 +79,7 @@ func start_hack(jason_node: Node2D) -> void:
 		_flash_power_required()
 		return
 
+	_hacking_jason = jason_node
 	Events.on_hack_started.emit(_hack_difficulty)
 
 	var mg: Node2D = minigame_scene.instantiate()
@@ -111,6 +115,9 @@ func _on_hack_cancelled() -> void:
 const FIREWALL_ALERT_RADIUS: float = 400.0
 
 func _on_firewall_triggered() -> void:
+	if is_instance_valid(_hacking_jason) and _hacking_jason.has_method("take_hit"):
+		_hacking_jason.take_hit(FIREWALL_DAMAGE)
+	Events.on_screen_shake.emit(0.35)
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy.has_method("alert"):
 			if global_position.distance_to(enemy.global_position) <= FIREWALL_ALERT_RADIUS:

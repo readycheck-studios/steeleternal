@@ -16,6 +16,9 @@ const HACK_COVER_STUN: float = 2.0  # Re-applied every process tick; value just 
 
 var is_hacked: bool = false
 var _hacking: bool = false
+var _hacking_jason: Node2D = null
+
+const FIREWALL_DAMAGE: float = 6.0
 
 signal vent_hacked
 
@@ -38,6 +41,7 @@ func start_hack(jason_node: Node2D) -> void:
 	if is_hacked or minigame_scene == null:
 		return
 	_hacking = true
+	_hacking_jason = jason_node
 	Events.on_hack_started.emit(2)
 	var mg: Node2D = minigame_scene.instantiate()
 	jason_node.add_child(mg)
@@ -63,6 +67,9 @@ func _on_hack_cancelled() -> void:
 const FIREWALL_ALERT_RADIUS: float = 400.0
 
 func _on_firewall_triggered() -> void:
+	if is_instance_valid(_hacking_jason) and _hacking_jason.has_method("take_hit"):
+		_hacking_jason.take_hit(FIREWALL_DAMAGE)
+	Events.on_screen_shake.emit(0.35)
 	# Alert nearby enemies — the Bulwark itself is stunned, but other enemies in range engage.
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy == get_parent():
