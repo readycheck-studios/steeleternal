@@ -1,0 +1,40 @@
+name: Discord Session Post
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "Update title"
+        required: true
+      body:
+        description: "Update body (plain text)"
+        required: true
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post session summary to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          TITLE: ${{ inputs.title }}
+          BODY: ${{ inputs.body }}
+        run: |
+          python3 - <<'EOF'
+          import os, json, urllib.request
+          webhook = os.environ["DISCORD_WEBHOOK_URL"]
+          title   = os.environ["TITLE"]
+          body    = os.environ["BODY"]
+          payload = json.dumps({
+              "embeds": [{
+                  "title": f"🛠 Steel Eternal — {title}",
+                  "description": body,
+                  "color": 0xF49E0B,
+                  "footer": {"text": "readycheck-studios/steeleternal"}
+              }]
+          }).encode()
+          req = urllib.request.Request(webhook, data=payload,
+              headers={"Content-Type": "application/json"}, method="POST")
+          with urllib.request.urlopen(req) as r:
+              print(f"Discord OK — {r.status}")
+          EOF

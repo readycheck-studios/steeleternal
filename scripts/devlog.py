@@ -60,4 +60,14 @@ with urllib.request.urlopen(req2) as r:
     card = json.loads(r.read())
     print(f"Trello card: {card['shortUrl']}")
 
-print("Discord: auto-posted on next git push via GitHub Action.")
+# ── Discord (via workflow_dispatch — runs from GitHub's servers) ──────────
+data3 = json.dumps({
+    "ref": "main",
+    "inputs": {"title": title, "body": body}
+}).encode()
+req3 = urllib.request.Request(
+    f"https://api.github.com/repos/{GH_REPO}/actions/workflows/discord-session-post.yml/dispatches",
+    data=data3, headers=GH_HEADERS, method="POST"
+)
+with urllib.request.urlopen(req3) as r:
+    print(f"Discord: workflow triggered (HTTP {r.status})")
