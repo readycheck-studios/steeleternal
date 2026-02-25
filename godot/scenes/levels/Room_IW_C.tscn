@@ -1,0 +1,131 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/PlayerRoot.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/Grunt.tscn" id="3_grunt"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/Bulwark.tscn" id="4_bulwark"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/NeuralParasite.tscn" id="5_parasite"]
+[ext_resource type="PackedScene" path="res://scenes/shared/RoomExit.tscn" id="6_room_exit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(1920, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+size = Vector2(160, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(16, 360)
+
+[node name="Room_IW_C" type="Node2D"]
+
+; Dark background
+[node name="Background" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, 0, 1920, 0, 1920, 360, 0, 360)
+color = Color(0.067, 0.067, 0.098, 1.0)
+z_index = -10
+
+[node name="WorldGeometry" type="Node2D" parent="."]
+
+; Floor
+[node name="Floor" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(960, 344)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Floor"]
+polygon = PackedVector2Array(-960, -16, 960, -16, 960, 16, -960, 16)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+; Left wall
+[node name="WallLeft" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(8, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/WallLeft"]
+shape = SubResource("RectangleShape2D_wall")
+
+; Right wall
+[node name="WallRight" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(1912, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/WallRight"]
+shape = SubResource("RectangleShape2D_wall")
+
+; Four elevated platforms in a staggered pattern — flanking routes for Jason to reach Bulwark vents
+[node name="Platform_C1" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(400, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_C1"]
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_C1"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+[node name="Platform_C2" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(700, 140)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_C2"]
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_C2"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+[node name="Platform_C3" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(1100, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_C3"]
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_C3"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+[node name="Platform_C4" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(1500, 140)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_C4"]
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_C4"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+[node name="PlayerRoot" parent="." instance=ExtResource("1_player")]
+position = Vector2(200, 300)
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+; Grunt cannon fodder flanking the Bulwarks
+[node name="Grunt_1" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(400, 300)
+
+[node name="Grunt_2" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(1000, 300)
+
+; Two Bulwarks — cannon-immune gauntlet; Jason must flank via platforms to hack vents
+[node name="Bulwark_1" parent="." instance=ExtResource("4_bulwark")]
+position = Vector2(650, 308)
+
+[node name="Bulwark_2" parent="." instance=ExtResource("4_bulwark")]
+position = Vector2(1350, 308)
+
+; Neural Parasite on Platform_C2 — guards the flanking route to Bulwark_1's vent
+[node name="NeuralParasite_1" parent="." instance=ExtResource("5_parasite")]
+position = Vector2(800, 200)
+
+; RoomExit — amber sensor strip at the right edge
+[node name="RoomExit" parent="." instance=ExtResource("6_room_exit")]
+position = Vector2(1890, 180)

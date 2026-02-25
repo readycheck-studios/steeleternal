@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="Steel Eternal"
 config/description="A 2D Rogue-Vania. Dual gameplay: N.O.V.A. Tank + Jason Pilot."
-run/main_scene="res://scenes/levels/TestRoom.tscn"
+run/main_scene="res://scenes/levels/Room_IW_A.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -25,6 +25,7 @@ config/icon="res://icon.svg"
 Events="*res://scripts/globals/Events.gd"
 GameData="*res://scripts/globals/GameData.gd"
 AudioManager="*res://scripts/audio/audio_manager.gd"
+RunManager="*res://scripts/pcg/run_manager.gd"
 
 [display]
 

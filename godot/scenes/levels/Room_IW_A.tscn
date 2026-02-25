@@ -1,0 +1,196 @@
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/PlayerRoot.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/Grunt.tscn" id="3_grunt"]
+[ext_resource type="PackedScene" path="res://scenes/quantum/HackingTerminal.tscn" id="4_terminal"]
+[ext_resource type="PackedScene" path="res://scenes/quantum/QuantumCore.tscn" id="5_quantum_core"]
+[ext_resource type="Script" path="res://scripts/quantum/phase_body.gd" id="6_phase_body"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/Bulwark.tscn" id="7_bulwark"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/NeuralParasite.tscn" id="8_parasite"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/VoidWalker.tscn" id="9_voidwalker"]
+[ext_resource type="PackedScene" path="res://scenes/shared/RoomExit.tscn" id="10_room_exit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(1920, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+size = Vector2(160, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(16, 360)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_phase_wall"]
+size = Vector2(16, 184)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_phase_bridge"]
+size = Vector2(220, 16)
+
+[node name="Room_IW_A" type="Node2D"]
+
+; Dark background spanning full room width
+[node name="Background" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, 0, 1920, 0, 1920, 360, 0, 360)
+color = Color(0.067, 0.067, 0.098, 1.0)
+z_index = -10
+
+[node name="WorldGeometry" type="Node2D" parent="."]
+
+; Floor
+[node name="Floor" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(960, 344)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Floor"]
+polygon = PackedVector2Array(-960, -16, 960, -16, 960, 16, -960, 16)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+; Left wall
+[node name="WallLeft" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(8, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/WallLeft"]
+shape = SubResource("RectangleShape2D_wall")
+
+; Right wall
+[node name="WallRight" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(1912, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/WallRight"]
+shape = SubResource("RectangleShape2D_wall")
+
+; Platforms — spread across 1920px for tank + pilot to traverse
+[node name="Platform_A" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(320, 255)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_A"]
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_A"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+[node name="Platform_B" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(640, 185)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_B"]
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_B"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+[node name="Platform_C" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(960, 255)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_C"]
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_C"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+[node name="Platform_D" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(1280, 185)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_D"]
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_D"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+[node name="Platform_E" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(1600, 255)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_E"]
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_E"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.200, 0.200, 0.250, 1.0)
+
+[node name="PlayerRoot" parent="." instance=ExtResource("1_player")]
+position = Vector2(200, 300)
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="Grunt_1" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(480, 300)
+
+[node name="Grunt_2" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(850, 300)
+
+[node name="Grunt_3" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(1300, 300)
+
+; Bulwark — immune to cannon until Jason hacks the cooling vent on its back
+[node name="Bulwark_1" parent="." instance=ExtResource("7_bulwark")]
+position = Vector2(1450, 308)
+
+; Hacking terminal on the floor
+[node name="HackingTerminal" parent="." instance=ExtResource("4_terminal")]
+position = Vector2(700, 316)
+
+; Quantum Core — sits on top of Platform_C
+[node name="QuantumCore" parent="." instance=ExtResource("5_quantum_core")]
+position = Vector2(960, 230)
+
+; Phase A wall — violet barrier blocking the right section in Phase A (default)
+[node name="PhaseWall_A" type="StaticBody2D" parent="."]
+script = ExtResource("6_phase_body")
+position = Vector2(1080, 252)
+collision_layer = 1
+active_phase = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhaseWall_A"]
+shape = SubResource("RectangleShape2D_phase_wall")
+
+[node name="Visual" type="Polygon2D" parent="PhaseWall_A"]
+polygon = PackedVector2Array(-8, -92, 8, -92, 8, 92, -8, 92)
+color = Color(0.38, 0.10, 0.80, 1.0)
+
+; Phase B bridge — amber elevated platform appearing after Core is activated
+[node name="PhaseBridge_B" type="StaticBody2D" parent="."]
+script = ExtResource("6_phase_body")
+position = Vector2(1230, 260)
+collision_layer = 0
+visible = false
+active_phase = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhaseBridge_B"]
+shape = SubResource("RectangleShape2D_phase_bridge")
+
+[node name="Visual" type="Polygon2D" parent="PhaseBridge_B"]
+polygon = PackedVector2Array(-110, -8, 110, -8, 110, 8, -110, 8)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+; Neural Parasites — hunt Jason on disembark, ignore N.O.V.A.
+[node name="NeuralParasite_1" parent="." instance=ExtResource("8_parasite")]
+position = Vector2(580, 300)
+
+[node name="NeuralParasite_2" parent="." instance=ExtResource("8_parasite")]
+position = Vector2(1150, 300)
+
+; Void-Walker — intangible in Phase A, materialises when Core is activated
+[node name="VoidWalker_1" parent="." instance=ExtResource("9_voidwalker")]
+position = Vector2(820, 300)
+
+; RoomExit — amber sensor strip at the right edge, triggers next room
+[node name="RoomExit" parent="." instance=ExtResource("10_room_exit")]
+position = Vector2(1890, 180)

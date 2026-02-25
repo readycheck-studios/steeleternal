@@ -178,7 +178,7 @@ func _on_run_ended(_cause: String) -> void:
 	_run_over = true
 	# Reload the scene after the HUD has had time to show the failure message.
 	await get_tree().create_timer(2.5).timeout
-	get_tree().reload_current_scene()
+	RunManager.restart_run()
 
 
 func _get_pawn_node(pawn: Pawn) -> CharacterBody2D:

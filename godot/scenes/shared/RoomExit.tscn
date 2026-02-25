@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/shared/room_exit.gd" id="1_room_exit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sensor"]
+size = Vector2(32, 360)
+
+[node name="RoomExit" type="Area2D"]
+script = ExtResource("1_room_exit")
+collision_layer = 0
+collision_mask = 6
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_sensor")
+
+; Amber vertical bar — dev-visible affordance showing the exit trigger strip
+[node name="Visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-16, -180, 16, -180, 16, 180, -16, 180)
+color = Color(0.961, 0.620, 0.043, 0.5)
