@@ -16,6 +16,7 @@ extends Node2D
 var is_hacked: bool = false
 
 var current_phase: int = 0
+var _hack_difficulty: int = 2  # Base difficulty; reduced by flux_2 upgrade
 
 @onready var visual: Polygon2D = $Visual
 @onready var inner_glow: Polygon2D = $InnerGlow
@@ -33,7 +34,18 @@ var _power_flash_timer: float = 0.0
 func _ready() -> void:
 	add_to_group("hackable")
 	prompt_label.visible = false
+	_apply_flux_upgrades()
 	_update_visuals()
+
+
+func _apply_flux_upgrades() -> void:
+	var lvl: Dictionary = GameData.upgrade_levels
+	# flux_2: reduce hack difficulty by 1 (min 1) — passed to minigame via on_hack_started
+	if lvl.get("flux_2", 0) >= 1:
+		_hack_difficulty = max(1, _hack_difficulty - 1)
+	# flux_3: increase N.O.V.A. power range
+	if lvl.get("flux_3", 0) >= 1:
+		nova_power_radius += 100.0
 
 
 func _process(delta: float) -> void:
@@ -64,7 +76,7 @@ func start_hack(jason_node: Node2D) -> void:
 		_flash_power_required()
 		return
 
-	Events.on_hack_started.emit(2)
+	Events.on_hack_started.emit(_hack_difficulty)
 
 	var mg: Node2D = minigame_scene.instantiate()
 	jason_node.add_child(mg)

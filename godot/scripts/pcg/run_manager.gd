@@ -3,6 +3,8 @@
 # Rooms are shuffled each run with Room_IW_A always anchoring position 0.
 extends Node
 
+const HUB_SCENE := "res://scenes/ui/AegisHub.tscn"
+
 const IRON_WASTES_POOL: Array[String] = [
 	"res://scenes/levels/Room_IW_A.tscn",
 	"res://scenes/levels/Room_IW_B.tscn",
@@ -32,6 +34,10 @@ func next_room() -> void:
 		# Pool exhausted — reshuffle for endless runs
 		_generate_run()
 	get_tree().change_scene_to_file(_sequence[_current_index])
+
+
+func go_to_hub() -> void:
+	get_tree().change_scene_to_file(HUB_SCENE)
 
 
 func restart_run() -> void:

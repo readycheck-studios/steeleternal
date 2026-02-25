@@ -32,12 +32,28 @@ func _ready() -> void:
 	Events.on_pawn_swapped.connect(func(_n: Node2D) -> void: save_run_state())
 	Events.on_world_shifted.connect(_on_world_shifted)
 	Events.on_run_ended.connect(_on_run_ended)
+	Events.on_enemy_died.connect(func(_pos: Vector2) -> void: award_phase_dust(1))
+	Events.on_hack_completed.connect(_on_core_hacked)
 
 
 func _notification(what: int) -> void:
 	# Save when the engine shuts down (editor Stop, window close).
 	if what == NOTIFICATION_PREDELETE:
 		save_run_state()
+
+
+# --- Phase Dust ---
+
+func award_phase_dust(amount: int) -> void:
+	phase_dust += amount
+	Events.on_phase_dust_changed.emit(phase_dust)
+	save_run_state()
+
+
+func _on_core_hacked() -> void:
+	# flux_1 upgrade gives +2 bonus (total 5 instead of 3)
+	var bonus: int = 2 if upgrade_levels.get("flux_1", 0) >= 1 else 0
+	award_phase_dust(3 + bonus)
 
 
 # --- Signal Handlers ---

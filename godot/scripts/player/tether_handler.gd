@@ -9,6 +9,9 @@ extends Node
 const MAX_TETHER_DISTANCE: float = 400.0
 const SEVERED_DRAIN_RATE: float = 10.0  # HP per second when severed
 
+# Neural Imprint bonus — set by player_manager._apply_neural_imprints()
+var distance_bonus: float = 0.0  # ghost_2: +100px
+
 var _nova: Node2D = null
 var _jason: Node2D = null
 var _is_tracking: bool = false
@@ -43,7 +46,7 @@ func _check_tether() -> void:
 		return
 
 	var dist := _jason.global_position.distance_to(_nova.global_position)
-	var severity := clampf(dist / MAX_TETHER_DISTANCE, 0.0, 1.0)
+	var severity := clampf(dist / (MAX_TETHER_DISTANCE + distance_bonus), 0.0, 1.0)
 	Events.on_tether_strained.emit(severity)
 
 	# Tether severed — drain Jason HP each tick

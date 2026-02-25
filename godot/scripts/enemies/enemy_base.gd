@@ -161,7 +161,7 @@ func _die() -> void:
 	state = State.DEAD
 	velocity = Vector2.ZERO
 	set_physics_process(false)
-	# TODO: death particles, loot drop
+	Events.on_enemy_died.emit(global_position)
 	queue_free()
 
 

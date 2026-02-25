@@ -21,6 +21,10 @@ const SPIKE_COLOR := Color(0.961, 0.620, 0.043, 0.80)  # Amber flash
 var hp: float = MAX_HP
 var is_hacking: bool = false
 
+# Neural Imprint bonuses — set by player_manager._apply_neural_imprints()
+var damage_reduction: float        = 0.0  # ghost_1: 0.20
+var spike_cooldown_reduction: float = 0.0  # ghost_3: 0.5s off cooldown
+
 var _coyote_timer: float = 0.0
 var _jump_buffer_timer: float = 0.0
 var _was_on_floor: bool = false
@@ -99,7 +103,7 @@ func _handle_data_spike(delta: float) -> void:
 
 
 func _fire_data_spike() -> void:
-	_spike_cooldown = SPIKE_COOLDOWN
+	_spike_cooldown = maxf(SPIKE_COOLDOWN - spike_cooldown_reduction, 0.1)
 	_spike_draw_timer = SPIKE_VISUAL_TIME
 	queue_redraw()
 	Events.on_sfx_play_at.emit("data_spike", global_position)
@@ -132,7 +136,7 @@ func _draw() -> void:
 # --- Health ---
 
 func take_hit(damage: float) -> void:
-	hp = clampf(hp - damage, 0.0, MAX_HP)
+	hp = clampf(hp - damage * (1.0 - damage_reduction), 0.0, MAX_HP)
 	Events.on_jason_health_changed.emit(hp)
 	if hp <= 0.0:
 		# Freeze Jason in place so enemies don't keep pushing the corpse.

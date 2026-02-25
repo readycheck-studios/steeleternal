@@ -24,6 +24,11 @@ const PROJECTILE_SPEED: float = 500.0
 var stability: float = MAX_STABILITY
 var is_stalled: bool = false
 
+# Neural Imprint bonuses — set by player_manager._apply_neural_imprints()
+var damage_reduction: float = 0.0  # titan_1: 0.20
+var damage_bonus: float     = 0.0  # titan_2: +10 dmg per shot
+var speed_bonus: float      = 0.0  # titan_3: +50 move speed
+
 var _facing_dir: float = 1.0
 var _fire_cooldown: float = 0.0
 
@@ -65,8 +70,9 @@ func _apply_gravity(delta: float) -> void:
 
 func _handle_movement(delta: float) -> void:
 	var dir := Input.get_axis("p_move_left", "p_move_right")
+	var top_speed := MOVE_SPEED + speed_bonus
 	if dir != 0.0:
-		velocity.x = move_toward(velocity.x, dir * MOVE_SPEED, ACCELERATION * delta)
+		velocity.x = move_toward(velocity.x, dir * top_speed, ACCELERATION * delta)
 		_facing_dir = dir
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, FRICTION * delta)
@@ -105,7 +111,7 @@ func _fire_cannon() -> void:
 	get_tree().current_scene.add_child(proj)
 	proj.global_position = weapon_hardpoint.global_position
 
-	var dmg := main_weapon.damage if main_weapon else 25.0
+	var dmg := (main_weapon.damage if main_weapon else 25.0) + damage_bonus
 	proj.setup(aim_dir, PROJECTILE_SPEED, dmg)
 
 	var shake := main_weapon.screen_shake_intensity if main_weapon else 0.5
@@ -118,7 +124,7 @@ func _fire_cannon() -> void:
 func take_hit(damage: float) -> void:
 	if is_stalled:
 		return
-	stability = clampf(stability - damage, 0.0, MAX_STABILITY)
+	stability = clampf(stability - damage * (1.0 - damage_reduction), 0.0, MAX_STABILITY)
 	Events.on_tank_stability_changed.emit(stability)
 	if stability <= 0.0:
 		_enter_stalled()

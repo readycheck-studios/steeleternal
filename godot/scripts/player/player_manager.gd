@@ -30,6 +30,7 @@ func _ready() -> void:
 	tether_handler.setup(nova, jason)
 	_activate_pawn(Pawn.NOVA)
 	_restore_from_save()
+	_apply_neural_imprints()
 	Events.on_tank_stalled.connect(_on_tank_stalled)
 	Events.on_run_ended.connect(_on_run_ended)
 	Events.on_screen_shake.connect(_on_screen_shake)
@@ -176,9 +177,20 @@ func _on_tank_stalled() -> void:
 
 func _on_run_ended(_cause: String) -> void:
 	_run_over = true
-	# Reload the scene after the HUD has had time to show the failure message.
+	# Give the HUD time to show the failure message, then go to the Aegis Hub.
 	await get_tree().create_timer(2.5).timeout
-	RunManager.restart_run()
+	RunManager.go_to_hub()
+
+
+func _apply_neural_imprints() -> void:
+	var lvl: Dictionary = GameData.upgrade_levels
+	if lvl.get("titan_1", 0) >= 1: nova.damage_reduction = 0.20
+	if lvl.get("titan_2", 0) >= 1: nova.damage_bonus     = 10.0
+	if lvl.get("titan_3", 0) >= 1: nova.speed_bonus      = 50.0
+	if lvl.get("ghost_1", 0) >= 1: jason.damage_reduction          = 0.20
+	if lvl.get("ghost_2", 0) >= 1: tether_handler.distance_bonus   = 100.0
+	if lvl.get("ghost_3", 0) >= 1: jason.spike_cooldown_reduction   = 0.5
+	# flux_1/2/3 applied in GameData._on_core_hacked() and quantum_core._ready()
 
 
 func _get_pawn_node(pawn: Pawn) -> CharacterBody2D:

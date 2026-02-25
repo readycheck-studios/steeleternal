@@ -44,6 +44,7 @@ func _connect_signals() -> void:
 	Events.on_tank_stalled.connect(_on_tank_stalled)
 	Events.on_tether_strained.connect(_on_tether_strained)
 	Events.on_run_ended.connect(_on_run_ended)
+	Events.on_phase_dust_changed.connect(func(v: int) -> void: dust_count.text = str(v))
 
 
 func _apply_styles() -> void:

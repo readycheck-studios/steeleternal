@@ -27,6 +27,12 @@ signal on_tank_stability_changed(new_value: float) # 0.0 to 100.0
 signal on_jason_health_changed(new_value: float)   # 0.0 to 30.0
 signal on_data_spike_hit                           # Jason's melee stun connected with an enemy
 
+# --- Enemies ---
+signal on_enemy_died(position: Vector2)
+
+# --- Phase Dust ---
+signal on_phase_dust_changed(new_value: int)
+
 # --- Run ---
 signal on_run_ended(cause: String)  # e.g. "jason_died", "nova_destroyed", "tether_severed"
 
