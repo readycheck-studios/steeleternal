@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://aegishub"]
+[gd_scene format=3 uid="uid://egishub"]
 
 [ext_resource type="Script" path="res://scripts/ui/aegis_hub.gd" id="1_aegishub"]
 
