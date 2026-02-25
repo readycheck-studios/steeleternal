@@ -194,3 +194,61 @@ position = Vector2(820, 300)
 ; RoomExit — amber sensor strip at the right edge, triggers next room
 [node name="RoomExit" parent="." instance=ExtResource("10_room_exit")]
 position = Vector2(1890, 180)
+
+; ── Background detail — Iron Wastes industrial dressing ───────────
+; All z_index = -5 (behind world geometry, in front of background fill)
+[node name="BGDetail" type="Node2D" parent="."]
+z_index = -5
+
+; Horizontal pipe runs — top and bottom of room
+[node name="Pipe_Top" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(0, 10, 1920, 10, 1920, 22, 0, 22)
+color = Color(0.14, 0.14, 0.19, 1.0)
+
+[node name="Pipe_Bot" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(0, 295, 1920, 295, 1920, 307, 0, 307)
+color = Color(0.14, 0.14, 0.19, 1.0)
+
+; Vertical wall section dividers — create industrial panel feel
+[node name="VPanel_1" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(476, 0, 482, 0, 482, 360, 476, 360)
+color = Color(0.10, 0.10, 0.14, 1.0)
+
+[node name="VPanel_2" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(956, 0, 962, 0, 962, 360, 956, 360)
+color = Color(0.10, 0.10, 0.14, 1.0)
+
+[node name="VPanel_3" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(1436, 0, 1442, 0, 1442, 360, 1436, 360)
+color = Color(0.10, 0.10, 0.14, 1.0)
+
+; Heavy structural ribs — vertical steel supports
+[node name="StructRib_1" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(618, 0, 626, 0, 626, 280, 618, 280)
+color = Color(0.11, 0.11, 0.16, 1.0)
+
+[node name="StructRib_2" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(1290, 0, 1298, 0, 1298, 280, 1290, 280)
+color = Color(0.11, 0.11, 0.16, 1.0)
+
+; Amber indicator lights along the top pipe
+[node name="Light_1" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(200, 11, 206, 11, 206, 17, 200, 17)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+[node name="Light_2" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(700, 11, 706, 11, 706, 17, 700, 17)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+[node name="Light_3" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(1200, 11, 1206, 11, 1206, 17, 1200, 17)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+[node name="Light_4" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(1700, 11, 1706, 11, 1706, 17, 1700, 17)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+; Amber floor glow — subtle warm accent at ground level
+[node name="FloorGlow" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(0, 325, 1920, 325, 1920, 331, 0, 331)
+color = Color(0.961, 0.620, 0.043, 0.28)

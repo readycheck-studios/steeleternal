@@ -5,6 +5,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_np"]
 size = Vector2(14, 18)
 
+; Neural Parasite — floating alien parasite. Ignores N.O.V.A., hunts Jason.
+; 4-point star silhouette with nested violet layers and amber eye.
+; Collision: 14×18 (half: 7×9)
 [node name="NeuralParasite" type="CharacterBody2D"]
 collision_layer = 64
 collision_mask = 39
@@ -13,7 +16,17 @@ script = ExtResource("1_np")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_np")
 
-; Violet diamond — visually distinct from Grunt (rectangle) and Bulwark (armour polygon)
-[node name="Visual" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(0, -10, 9, 0, 0, 10, -9, 0)
+; ── Outer star (4-point, 8 vertices — extends slightly past collision) ──
+[node name="StarBody" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -9, 3, -3, 8, 0, 3, 3, 0, 9, -3, 3, -8, 0, -3, -3)
 color = Color(0.55, 0.10, 0.90, 1.0)
+
+; ── Inner diamond body ────────────────────────────────────────────
+[node name="InnerBody" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -5, 4, 0, 0, 5, -4, 0)
+color = Color(0.70, 0.28, 1.0, 1.0)
+
+; ── Amber eye — signals Jason-hunting behaviour ───────────────────
+[node name="Eye" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -2, 2, 0, 0, 2, -2, 0)
+color = Color(0.961, 0.620, 0.043, 1.0)

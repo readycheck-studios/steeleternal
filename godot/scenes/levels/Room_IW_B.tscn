@@ -116,3 +116,57 @@ position = Vector2(1100, 316)
 ; RoomExit — amber sensor strip at the right edge
 [node name="RoomExit" parent="." instance=ExtResource("6_room_exit")]
 position = Vector2(1890, 180)
+
+; ── Background detail — Iron Wastes Room B variant ────────────────
+[node name="BGDetail" type="Node2D" parent="."]
+z_index = -5
+
+; Top and bottom pipes — continuous across room
+[node name="Pipe_Top" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(0, 10, 1920, 10, 1920, 22, 0, 22)
+color = Color(0.14, 0.14, 0.19, 1.0)
+
+[node name="Pipe_Bot" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(0, 295, 1920, 295, 1920, 307, 0, 307)
+color = Color(0.14, 0.14, 0.19, 1.0)
+
+; Partial mid-room pipe — adds horizontal depth variation vs Room A
+[node name="Pipe_Mid" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(200, 130, 1100, 130, 1100, 139, 200, 139)
+color = Color(0.12, 0.12, 0.17, 1.0)
+
+; Wall section dividers
+[node name="VPanel_1" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(476, 0, 482, 0, 482, 360, 476, 360)
+color = Color(0.10, 0.10, 0.14, 1.0)
+
+[node name="VPanel_2" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(956, 0, 962, 0, 962, 360, 956, 360)
+color = Color(0.10, 0.10, 0.14, 1.0)
+
+[node name="VPanel_3" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(1436, 0, 1442, 0, 1442, 360, 1436, 360)
+color = Color(0.10, 0.10, 0.14, 1.0)
+
+; Single structural rib offset from Room A for variety
+[node name="StructRib_1" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(740, 0, 748, 0, 748, 260, 740, 260)
+color = Color(0.11, 0.11, 0.16, 1.0)
+
+; Indicator lights — violet tint to match lighter tone of this room
+[node name="Light_1" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(300, 11, 306, 11, 306, 17, 300, 17)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+[node name="Light_2" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(900, 11, 906, 11, 906, 17, 900, 17)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+[node name="Light_3" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(1500, 11, 1506, 11, 1506, 17, 1500, 17)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+; Floor glow accent
+[node name="FloorGlow" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(0, 325, 1920, 325, 1920, 331, 0, 331)
+color = Color(0.961, 0.620, 0.043, 0.28)

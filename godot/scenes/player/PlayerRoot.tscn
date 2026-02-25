@@ -16,6 +16,9 @@ size = Vector2(14, 28)
 [node name="PlayerRoot" type="Node2D"]
 script = ExtResource("1_mgr")
 
+; ═══════════════════════════════════════════════════════
+;  N.O.V.A. TANK
+; ═══════════════════════════════════════════════════════
 [node name="NOVA_Tank" type="CharacterBody2D" parent="."]
 collision_layer = 2
 collision_mask = 73
@@ -26,13 +29,66 @@ projectile_scene = ExtResource("5_proj")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NOVA_Tank"]
 shape = SubResource("RectangleShape2D_nova")
 
-[node name="PlaceholderSprite" type="Polygon2D" parent="NOVA_Tank"]
-polygon = PackedVector2Array(-24, -14, 24, -14, 24, 14, -24, 14)
+; ── Wheels (z -1 — render behind everything else) ─────────────────
+; Four hexagon wheels. Centers at y=13, x = -16 / -5 / 5 / 16.
+; Radius ≈ 5.  Computed with 60° increments:
+;   offsets: (±5,0), (±2.5,±4.3)
+[node name="Wheel_FL" type="Polygon2D" parent="NOVA_Tank"]
+polygon = PackedVector2Array(-11, 13, -13.5, 17.3, -18.5, 17.3, -21, 13, -18.5, 8.7, -13.5, 8.7)
+color = Color(0.15, 0.15, 0.18, 1.0)
+z_index = -1
+
+[node name="Wheel_ML" type="Polygon2D" parent="NOVA_Tank"]
+polygon = PackedVector2Array(0, 13, -2.5, 17.3, -7.5, 17.3, -10, 13, -7.5, 8.7, -2.5, 8.7)
+color = Color(0.15, 0.15, 0.18, 1.0)
+z_index = -1
+
+[node name="Wheel_MR" type="Polygon2D" parent="NOVA_Tank"]
+polygon = PackedVector2Array(10, 13, 7.5, 17.3, 2.5, 17.3, 0, 13, 2.5, 8.7, 7.5, 8.7)
+color = Color(0.15, 0.15, 0.18, 1.0)
+z_index = -1
+
+[node name="Wheel_BR" type="Polygon2D" parent="NOVA_Tank"]
+polygon = PackedVector2Array(21, 13, 18.5, 17.3, 13.5, 17.3, 11, 13, 13.5, 8.7, 18.5, 8.7)
+color = Color(0.15, 0.15, 0.18, 1.0)
+z_index = -1
+
+; ── Track skirt (gunmetal, slightly wider than hull) ──────────────
+[node name="TrackSkirt" type="Polygon2D" parent="NOVA_Tank"]
+polygon = PackedVector2Array(-26, 3, 26, 3, 26, 14, -26, 14)
+color = Color(0.18, 0.18, 0.22, 1.0)
+z_index = 0
+
+; ── Hull (amber trapezoid — wider at base, notched at top) ────────
+[node name="Hull" type="Polygon2D" parent="NOVA_Tank"]
+polygon = PackedVector2Array(-22, -10, 22, -10, 24, 3, -24, 3)
 color = Color(0.961, 0.620, 0.043, 1.0)
+z_index = 1
 
-[node name="WeaponHardpoint" type="Marker2D" parent="NOVA_Tank"]
-position = Vector2(28, -8)
+; ── Turret base (hexagon platform the turret sits on) ─────────────
+[node name="TurretBase" type="Polygon2D" parent="NOVA_Tank"]
+polygon = PackedVector2Array(-7, -18, 7, -18, 9, -14, 7, -10, -7, -10, -9, -14)
+color = Color(0.75, 0.48, 0.03, 1.0)
+z_index = 2
 
+; ── Turret (Node2D — rotated each frame in nova.gd to face mouse) ─
+; Pivot is at (0, -13), sitting in the centre of TurretBase.
+; Barrel polygon starts at x=3 to leave a tiny hub gap, extends 18px.
+[node name="Turret" type="Node2D" parent="NOVA_Tank"]
+position = Vector2(0, -13)
+z_index = 3
+
+[node name="Barrel" type="Polygon2D" parent="NOVA_Tank/Turret"]
+polygon = PackedVector2Array(3, -2.5, 21, -2.5, 21, 2.5, 3, 2.5)
+color = Color(0.22, 0.22, 0.28, 1.0)
+
+; Weapon spawn point at the barrel tip
+[node name="WeaponHardpoint" type="Marker2D" parent="NOVA_Tank/Turret"]
+position = Vector2(21, 0)
+
+; ═══════════════════════════════════════════════════════
+;  JASON PILOT
+; ═══════════════════════════════════════════════════════
 [node name="Jason_Pilot" type="CharacterBody2D" parent="."]
 collision_layer = 4
 collision_mask = 81
@@ -42,10 +98,14 @@ script = ExtResource("3_jason")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Jason_Pilot"]
 shape = SubResource("RectangleShape2D_jason")
 
+; Simple blue silhouette — humanoid proportions
 [node name="PlaceholderSprite" type="Polygon2D" parent="Jason_Pilot"]
 polygon = PackedVector2Array(-7, -14, 7, -14, 7, 14, -7, 14)
 color = Color(0.251, 0.647, 0.961, 1.0)
 
+; ═══════════════════════════════════════════════════════
+;  CAMERA & TETHER
+; ═══════════════════════════════════════════════════════
 [node name="CameraManager" type="Camera2D" parent="."]
 limit_left = 0
 limit_top = 0

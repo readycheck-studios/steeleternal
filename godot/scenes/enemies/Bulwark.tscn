@@ -7,6 +7,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bulwark"]
 size = Vector2(28, 40)
 
+; Bulwark — heavy armoured enemy. Immune to cannon until vent is hacked.
+; Node names BodySprite / ShieldFront / CoolingVent are referenced by bulwark.gd — do not rename.
+; Collision: 28×40 (half: 14×20)
 [node name="Bulwark" type="CharacterBody2D"]
 collision_layer = 64
 collision_mask = 39
@@ -15,24 +18,55 @@ script = ExtResource("1_bulwark")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_bulwark")
 
-; Dark iron body — wide and tall
+; ── Legs (behind body) ────────────────────────────────────────────
+[node name="LegL" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-13, 12, -5, 12, -5, 21, -13, 21)
+color = Color(0.18, 0.18, 0.24, 1.0)
+
+[node name="LegR" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(5, 12, 13, 12, 13, 21, 5, 21)
+color = Color(0.18, 0.18, 0.24, 1.0)
+
+; ── Main iron body (required name: BodySprite — used by bulwark.gd) ──
 [node name="BodySprite" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-14, -20, 14, -20, 14, 20, -14, 20)
 color = Color(0.22, 0.22, 0.28, 1.0)
 
-; Amber shield panel — repositioned each frame to stay on front face
+; ── Shoulder armour plates ────────────────────────────────────────
+[node name="ShoulderL" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-18, -18, -14, -18, -14, -6, -18, -8)
+color = Color(0.28, 0.28, 0.36, 1.0)
+
+[node name="ShoulderR" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(14, -18, 18, -18, 18, -8, 14, -6)
+color = Color(0.28, 0.28, 0.36, 1.0)
+
+; ── Amber eye slit ────────────────────────────────────────────────
+[node name="EyeSlit" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-6, -14, 6, -14, 6, -11, -6, -11)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+; ── Chest ventilation grills ──────────────────────────────────────
+[node name="Grill1" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-5, -5, 5, -5, 5, -2, -5, -2)
+color = Color(0.14, 0.14, 0.18, 1.0)
+
+[node name="Grill2" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-5, 2, 5, 2, 5, 5, -5, 5)
+color = Color(0.14, 0.14, 0.18, 1.0)
+
+; ── Amber shield panel — script repositions to front face each frame ──
 [node name="ShieldFront" type="Polygon2D" parent="."]
 position = Vector2(14, 0)
 polygon = PackedVector2Array(-4, -18, 4, -18, 4, 18, -4, 18)
 color = Color(0.961, 0.620, 0.043, 1.0)
 
-; Cooling vent — repositioned each frame to stay on back face
+; ── Cooling vent — script repositions to back face each frame ─────
 [node name="CoolingVent" type="Node2D" parent="."]
 position = Vector2(-20, 0)
 script = ExtResource("2_vent")
 minigame_scene = ExtResource("3_minigame")
 
-; Violet diamond — visible indicator of hackable vent
 [node name="VentVisual" type="Polygon2D" parent="CoolingVent"]
 polygon = PackedVector2Array(0, -6, 6, 0, 0, 6, -6, 0)
 color = Color(0.38, 0.10, 0.80, 1.0)

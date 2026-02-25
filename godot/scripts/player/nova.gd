@@ -18,7 +18,8 @@ const PROJECTILE_SPEED: float = 500.0
 @export var main_weapon: WeaponData = null
 @export var projectile_scene: PackedScene = null
 
-@onready var weapon_hardpoint: Marker2D = $WeaponHardpoint
+@onready var weapon_hardpoint: Marker2D = $Turret/WeaponHardpoint
+@onready var turret: Node2D = $Turret
 
 var stability: float = MAX_STABILITY
 var is_stalled: bool = false
@@ -36,6 +37,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_update_turret_aim()  # always tracks mouse, even when stalled
 	if is_stalled:
 		return
 	_fire_cooldown = maxf(_fire_cooldown - delta, 0.0)
@@ -68,8 +70,10 @@ func _handle_movement(delta: float) -> void:
 		_facing_dir = dir
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, FRICTION * delta)
-	# Mirror hardpoint to the facing side
-	weapon_hardpoint.position.x = absf(weapon_hardpoint.position.x) * _facing_dir
+
+
+func _update_turret_aim() -> void:
+	turret.rotation = (get_global_mouse_position() - turret.global_position).angle()
 
 
 func _check_crush_damage() -> void:
