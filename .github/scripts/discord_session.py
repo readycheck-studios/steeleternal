@@ -13,11 +13,11 @@ payload = json.dumps({
         "color": 0xF49E0B,
         "footer": {"text": "readycheck-studios/steeleternal"}
     }]
-}, ensure_ascii=False).encode("utf-8")
+}).encode()
 
 req = urllib.request.Request(
     webhook, data=payload,
-    headers={"Content-Type": "application/json; charset=utf-8"},
+    headers={"Content-Type": "application/json"},
     method="POST"
 )
 try:
