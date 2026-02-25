@@ -18,6 +18,9 @@ const SPIKE_STUN_DURATION: float = 5.0  # How long the target is stunned
 const SPIKE_VISUAL_TIME: float = 0.20   # How long the amber flash stays visible
 const SPIKE_COLOR := Color(0.961, 0.620, 0.043, 0.80)  # Amber flash
 
+const SHOT_COOLDOWN: float = 0.4        # Seconds between energy pistol shots
+const SHOT_SCENE := preload("res://scenes/weapons/JasonShot.tscn")
+
 var hp: float = MAX_HP
 var is_hacking: bool = false
 
@@ -31,6 +34,7 @@ var _was_on_floor: bool = false
 var _facing: float = 1.0         # 1.0 = right, -1.0 = left
 var _spike_cooldown: float = 0.0
 var _spike_draw_timer: float = 0.0
+var _shot_cooldown: float = 0.0
 
 var _gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -47,6 +51,7 @@ func _physics_process(delta: float) -> void:
 	_handle_movement()
 	_handle_jump()
 	_handle_data_spike(delta)
+	_handle_ranged_attack(delta)
 	move_and_slide()
 	_was_on_floor = is_on_floor()
 
@@ -121,6 +126,27 @@ func _fire_data_spike() -> void:
 			body.stun(SPIKE_STUN_DURATION)
 			Events.on_data_spike_hit.emit()
 			Events.on_screen_shake.emit(0.25)
+
+
+# --- Energy Pistol ---
+
+func _handle_ranged_attack(delta: float) -> void:
+	_shot_cooldown = maxf(_shot_cooldown - delta, 0.0)
+	if _shot_cooldown > 0.0 or is_hacking:
+		return
+	if Input.is_action_just_pressed("j_shoot"):
+		_fire_shot()
+
+
+func _fire_shot() -> void:
+	_shot_cooldown = SHOT_COOLDOWN
+	var shot: CharacterBody2D = SHOT_SCENE.instantiate()
+	# Spawn slightly in front of Jason so it clears his own collider
+	shot.global_position = global_position + Vector2(_facing * 12.0, -8.0)
+	shot.direction = Vector2(_facing, 0.0)
+	# Rotate visual to match travel direction
+	shot.rotation = 0.0 if _facing > 0.0 else PI
+	get_tree().root.add_child(shot)
 
 
 func _draw() -> void:

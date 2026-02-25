@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/jason_shot.gd" id="1_shot"]
+
+[sub_resource type="CapsuleShape2D" id="Shape_shot"]
+radius = 2.0
+height = 7.0
+
+; ── JasonShot — cyan energy bolt ──────────────────────────────────────────
+; Rotated 90° at runtime to match travel direction via jason.gd.
+; Distinct from N.O.V.A.'s amber tracer: smaller, cyan, fast decay range.
+[node name="JasonShot" type="CharacterBody2D"]
+script = ExtResource("1_shot")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape_shot")
+
+; Cyan horizontal diamond: 10×5 px
+[node name="Visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(5, 0, 0, -2.5, -5, 0, 0, 2.5)
+color = Color(0.20, 0.88, 1.00, 1.0)
