@@ -1,0 +1,221 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/PlayerRoot.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/Grunt.tscn" id="3_grunt"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/NeuralParasite.tscn" id="4_parasite"]
+[ext_resource type="PackedScene" path="res://scenes/shared/RoomExit.tscn" id="5_room_exit"]
+
+[sub_resource type="RectangleShape2D" id="Shape_floor"]
+size = Vector2(1920, 32)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall"]
+size = Vector2(16, 360)
+
+[sub_resource type="RectangleShape2D" id="Shape_platform"]
+size = Vector2(160, 16)
+
+[sub_resource type="RectangleShape2D" id="Shape_ventwall"]
+size = Vector2(16, 240)
+
+[sub_resource type="RectangleShape2D" id="Shape_ventceiling"]
+size = Vector2(316, 8)
+
+; ── Room_VV_A — Void-Vents biome ──────────────────────────────────────────
+; First Void-Vents room. N.O.V.A. is blocked by a vent wall at x=800.
+; Jason disembarks, squeezes through the 88px floor-level gap, and clears
+; the narrow corridor alone. RoomExit is at the far end of the vent so
+; tether distance stays under 300px (N.O.V.A. parked at vent wall, Jason
+; at exit: 300px — safely within 400px max).
+[node name="Room_VV_A" type="Node2D"]
+
+; Deep violet background — distinct from Iron Wastes charcoal
+[node name="Background" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, 0, 1920, 0, 1920, 360, 0, 360)
+color = Color(0.047, 0.035, 0.082, 1.0)
+z_index = -10
+
+[node name="WorldGeometry" type="Node2D" parent="."]
+
+; Floor
+[node name="Floor" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(960, 344)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Floor"]
+shape = SubResource("Shape_floor")
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Floor"]
+polygon = PackedVector2Array(-960, -16, 960, -16, 960, 16, -960, 16)
+color = Color(0.160, 0.120, 0.210, 1.0)
+
+; Left wall
+[node name="WallLeft" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(8, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/WallLeft"]
+shape = SubResource("Shape_wall")
+
+; Right wall
+[node name="WallRight" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(1912, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/WallRight"]
+shape = SubResource("Shape_wall")
+
+; Two platforms in the main zone for Jason to use
+[node name="Platform_V1" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(300, 230)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_V1"]
+shape = SubResource("Shape_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_V1"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.160, 0.120, 0.210, 1.0)
+
+[node name="Platform_V2" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(620, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/Platform_V2"]
+shape = SubResource("Shape_platform")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/Platform_V2"]
+polygon = PackedVector2Array(-80, -8, 80, -8, 80, 8, -80, 8)
+color = Color(0.160, 0.120, 0.210, 1.0)
+
+; ── Vent Entry Wall ────────────────────────────────────────────────────────
+; Solid wall from top of room (y=0) down to y=240. The gap below (y=240–328)
+; is 88px — enough for Jason (≈48px) but not N.O.V.A. (a full tank).
+[node name="VentWallEntry" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(800, 120)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/VentWallEntry"]
+shape = SubResource("Shape_ventwall")
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/VentWallEntry"]
+polygon = PackedVector2Array(-8, -120, 8, -120, 8, 120, -8, 120)
+color = Color(0.220, 0.090, 0.400, 1.0)
+
+; ── Vent Ceiling ───────────────────────────────────────────────────────────
+; Low ceiling sealing the corridor from x=800 to x=1116 at y=240.
+; Extends 16px past the right wall so it visually meets the corner cleanly.
+[node name="VentCeiling" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(958, 236)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/VentCeiling"]
+shape = SubResource("Shape_ventceiling")
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/VentCeiling"]
+polygon = PackedVector2Array(-158, -4, 158, -4, 158, 4, -158, 4)
+color = Color(0.220, 0.090, 0.400, 1.0)
+
+; ── Vent Right Wall ────────────────────────────────────────────────────────
+; Closes the corridor. Only Jason can reach this wall since N.O.V.A.
+; is blocked at the entry. RoomExit sensor sits 26px in front of it.
+[node name="VentWallRight" type="StaticBody2D" parent="WorldGeometry"]
+collision_layer = 1
+position = Vector2(1116, 120)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldGeometry/VentWallRight"]
+shape = SubResource("Shape_ventwall")
+
+[node name="Visual" type="Polygon2D" parent="WorldGeometry/VentWallRight"]
+polygon = PackedVector2Array(-8, -120, 8, -120, 8, 120, -8, 120)
+color = Color(0.220, 0.090, 0.400, 1.0)
+
+; ── Entities ───────────────────────────────────────────────────────────────
+
+[node name="PlayerRoot" parent="." instance=ExtResource("1_player")]
+position = Vector2(200, 300)
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+; Two Grunts in main zone — N.O.V.A. engages while Jason prepares to disembark
+[node name="Grunt_1" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(420, 300)
+
+[node name="Grunt_2" parent="." instance=ExtResource("3_grunt")]
+position = Vector2(660, 300)
+
+; Neural Parasite inside the vent — hunts Jason in tight quarters.
+; No escape room, no N.O.V.A. to fall back to.
+[node name="NeuralParasite_Vent" parent="." instance=ExtResource("4_parasite")]
+position = Vector2(958, 295)
+
+; RoomExit at the far end of the vent. Jason triggers it; N.O.V.A. never
+; reaches x=1090. Tether distance at this point: ~300px (safe).
+[node name="RoomExit" parent="." instance=ExtResource("5_room_exit")]
+position = Vector2(1090, 180)
+
+; ── Background detail — Void-Vents biome ──────────────────────────────────
+[node name="BGDetail" type="Node2D" parent="."]
+z_index = -5
+
+; Top conduit pipes — runs full width, shifts to a brighter violet in vent zone
+[node name="Conduit_Main" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(0, 8, 800, 8, 800, 20, 0, 20)
+color = Color(0.10, 0.06, 0.18, 1.0)
+
+[node name="Conduit_Vent" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(800, 8, 1116, 8, 1116, 20, 800, 20)
+color = Color(0.18, 0.06, 0.32, 1.0)
+
+; Bottom pipe
+[node name="Pipe_Bot" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(0, 295, 800, 295, 800, 307, 0, 307)
+color = Color(0.10, 0.06, 0.18, 1.0)
+
+; Vent gap marker — glowing violet strip highlights the entry gap
+[node name="VentGap_Glow" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(795, 240, 805, 240, 805, 328, 795, 328)
+color = Color(0.55, 0.10, 0.85, 0.55)
+
+; Vent interior floor glow — brighter than main zone to read as a different space
+[node name="VentFloor_Glow" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(800, 322, 1116, 322, 1116, 328, 800, 328)
+color = Color(0.55, 0.10, 0.85, 0.38)
+
+; Structural ribs
+[node name="Rib_1" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(390, 0, 398, 0, 398, 360, 390, 360)
+color = Color(0.08, 0.05, 0.14, 1.0)
+
+[node name="Rib_2" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(680, 0, 688, 0, 688, 360, 680, 360)
+color = Color(0.08, 0.05, 0.14, 1.0)
+
+; Quantum flora — sickly violet dots at floor level (Void-Vents biome marker)
+[node name="Flora_1" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(180, 320, 192, 320, 192, 328, 180, 328)
+color = Color(0.55, 0.10, 0.85, 0.70)
+
+[node name="Flora_2" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(480, 320, 490, 320, 490, 328, 480, 328)
+color = Color(0.20, 0.88, 1.00, 0.55)
+
+[node name="Flora_3" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(680, 320, 690, 320, 690, 328, 680, 328)
+color = Color(0.55, 0.10, 0.85, 0.65)
+
+; Indicator lights — cyan instead of amber for Void-Vents
+[node name="Light_1" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(200, 9, 206, 9, 206, 15, 200, 15)
+color = Color(0.20, 0.88, 1.00, 1.0)
+
+[node name="Light_2" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(550, 9, 556, 9, 556, 15, 550, 15)
+color = Color(0.38, 0.15, 0.75, 1.0)
+
+; Floor glow — violet tint instead of Iron Wastes amber
+[node name="FloorGlow" type="Polygon2D" parent="BGDetail"]
+polygon = PackedVector2Array(0, 325, 800, 325, 800, 331, 0, 331)
+color = Color(0.38, 0.15, 0.75, 0.20)

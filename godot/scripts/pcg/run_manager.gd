@@ -9,6 +9,7 @@ const IRON_WASTES_POOL: Array[String] = [
 	"res://scenes/levels/Room_IW_A.tscn",
 	"res://scenes/levels/Room_IW_B.tscn",
 	"res://scenes/levels/Room_IW_C.tscn",
+	"res://scenes/levels/Room_VV_A.tscn",
 ]
 
 var _sequence: Array[String] = []
