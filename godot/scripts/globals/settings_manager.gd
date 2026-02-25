@@ -51,7 +51,7 @@ func load_settings() -> void:
 	var f := FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if not f:
 		return
-	var result := JSON.parse_string(f.get_as_text())
+	var result: Variant = JSON.parse_string(f.get_as_text())
 	if not result is Dictionary:
 		return
 	master_volume_db = float(result.get("master_volume_db", 0.0))
