@@ -29,6 +29,8 @@ signal on_data_spike_hit                           # Jason's melee stun connecte
 
 # --- Enemies ---
 signal on_enemy_died(position: Vector2)
+signal on_enemy_aggro     # An enemy entered CHASE or ATTACK from a non-combat state
+signal on_enemy_deaggro   # An enemy returned to IDLE/PATROL/STUNNED, or died
 
 # --- Phase Dust ---
 signal on_phase_dust_changed(new_value: int)

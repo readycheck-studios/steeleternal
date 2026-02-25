@@ -60,6 +60,23 @@ func _apply_gravity(delta: float) -> void:
 		velocity.y += _gravity * GRAVITY_MULT * delta
 
 
+# --- State Helpers ---
+
+func _is_combat_state(s: State) -> bool:
+	return s == State.CHASE or s == State.ATTACK
+
+
+# Central state setter — emits aggro/deaggro signals when crossing combat boundary.
+func _transition_state(new_state: State) -> void:
+	var was_combat := _is_combat_state(state)
+	var will_combat := _is_combat_state(new_state)
+	state = new_state
+	if not was_combat and will_combat:
+		Events.on_enemy_aggro.emit()
+	elif was_combat and not will_combat:
+		Events.on_enemy_deaggro.emit()
+
+
 # --- State Machine ---
 
 func _tick_state(delta: float) -> void:
@@ -76,17 +93,17 @@ func _state_stunned(delta: float) -> void:
 	_stun_timer = maxf(_stun_timer - delta, 0.0)
 	if _stun_timer <= 0.0:
 		modulate = Color.WHITE
-		state = _pre_stun_state
+		_transition_state(_pre_stun_state)
 
 
 func _state_idle(_delta: float) -> void:
 	velocity.x = 0.0
-	state = State.PATROL
+	_transition_state(State.PATROL)
 
 
 func _state_patrol(delta: float) -> void:
 	if _target_in_range(detection_radius):
-		state = State.CHASE
+		_transition_state(State.CHASE)
 		return
 	velocity.x = patrol_direction * move_speed
 	_patrol_timer += delta
@@ -97,13 +114,13 @@ func _state_patrol(delta: float) -> void:
 
 func _state_chase(_delta: float) -> void:
 	if not _has_valid_target():
-		state = State.PATROL
+		_transition_state(State.PATROL)
 		return
 	if not _target_in_range(detection_radius * 1.5):
-		state = State.PATROL
+		_transition_state(State.PATROL)
 		return
 	if _target_in_range(attack_radius):
-		state = State.ATTACK
+		_transition_state(State.ATTACK)
 		return
 	var dir := signf(target.global_position.x - global_position.x)
 	velocity.x = dir * move_speed
@@ -112,7 +129,7 @@ func _state_chase(_delta: float) -> void:
 func _state_attack(_delta: float) -> void:
 	velocity.x = 0.0
 	if not _has_valid_target() or not _target_in_range(attack_radius * 1.3):
-		state = State.CHASE
+		_transition_state(State.CHASE)
 
 
 # --- Damage ---
@@ -142,7 +159,7 @@ func stun(duration: float) -> void:
 	if state != State.STUNNED:
 		_pre_stun_state = state
 	_stun_timer = duration
-	state = State.STUNNED
+	_transition_state(State.STUNNED)
 	velocity.x = 0.0
 	modulate = STUN_TINT
 
@@ -152,13 +169,13 @@ func take_damage(amount: float) -> void:
 		return
 	hp = clampf(hp - amount, 0.0, max_hp)
 	if state != State.CHASE and state != State.ATTACK:
-		state = State.CHASE  # Aggro on hit
+		_transition_state(State.CHASE)  # Aggro on hit
 	if hp <= 0.0:
 		_die()
 
 
 func _die() -> void:
-	state = State.DEAD
+	_transition_state(State.DEAD)
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 	Events.on_enemy_died.emit(global_position)

@@ -27,6 +27,7 @@ GameData="*res://scripts/globals/GameData.gd"
 AudioManager="*res://scripts/audio/audio_manager.gd"
 RunManager="*res://scripts/pcg/run_manager.gd"
 SettingsManager="*res://scripts/globals/settings_manager.gd"
+MusicManager="*res://scripts/audio/music_manager.gd"
 
 [display]
 
