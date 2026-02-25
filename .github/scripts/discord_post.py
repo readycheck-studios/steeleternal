@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
-"""Post a commit dev-log to Discord #dev-updates."""
+"""Post a commit dev-log to Discord #dev-updates via webhook."""
 import os, json, urllib.request, sys
 
-token   = os.environ["DISCORD_BOT_TOKEN"]
+webhook = os.environ["DISCORD_WEBHOOK_URL"]
 sha     = os.environ["COMMIT_SHA"][:7]
-msg     = os.environ["COMMIT_MSG"].split("\n")[0]   # first line only
+msg     = os.environ["COMMIT_MSG"].split("\n")[0]
 author  = os.environ["COMMIT_AUTHOR"]
 repo    = os.environ["REPO"]
 branch  = os.environ["BRANCH"]
 ts      = os.environ["COMMIT_TIMESTAMP"]
 files   = os.environ.get("FILES_CHANGED", "?")
 url     = f"https://github.com/{repo}/commit/{os.environ['COMMIT_SHA']}"
-channel = "1475632213037944912"
 
 payload = json.dumps({
     "embeds": [{
@@ -29,9 +28,9 @@ payload = json.dumps({
 }).encode()
 
 req = urllib.request.Request(
-    f"https://discord.com/api/v10/channels/{channel}/messages",
+    webhook,
     data=payload,
-    headers={"Authorization": f"Bot {token}", "Content-Type": "application/json"},
+    headers={"Content-Type": "application/json"},
     method="POST",
 )
 try:
