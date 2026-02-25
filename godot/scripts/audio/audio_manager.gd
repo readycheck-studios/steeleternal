@@ -11,8 +11,14 @@
 #   data_spike.ogg         — Jason's Data-Spike melee stun
 #   tether_strain_loop.ogg — looping danger tone (modulated by tether severity)
 #   hack_success.ogg       — Synaptic Bypass completed
+#   hack_start.ogg         — Synaptic Bypass initiated
+#   hack_fail.ogg          — Firewall resets hack progress
 #   phase_shift.ogg        — Quantum Core world shift
 #   tank_stalled.ogg       — N.O.V.A. Stability hits zero
+#   nova_hit.ogg           — N.O.V.A. takes a stability hit
+#   jason_hurt.ogg         — Jason takes damage
+#   pawn_swap.ogg          — Jason embarks / disembarks N.O.V.A.
+#   enemy_died.ogg         — Enemy destroyed
 extends Node
 
 const SFX_PATH := "res://assets/audio/sfx/"
@@ -24,7 +30,12 @@ var _sfx: Dictionary = {}
 # Persistent non-positional players
 var _player_ui:   AudioStreamPlayer
 var _player_ui2:  AudioStreamPlayer
+var _player_hit:  AudioStreamPlayer  # Dedicated to nova_hit / jason_hurt (high frequency, short)
 var _tether_loop: AudioStreamPlayer
+
+# Previous values for change-direction detection (only play hurt SFX on decrease)
+var _prev_stability: float = 100.0
+var _prev_jason_hp:  float = 30.0
 
 
 func _ready() -> void:
@@ -37,9 +48,11 @@ func _ready() -> void:
 func _build_players() -> void:
 	_player_ui   = AudioStreamPlayer.new()
 	_player_ui2  = AudioStreamPlayer.new()
+	_player_hit  = AudioStreamPlayer.new()
 	_tether_loop = AudioStreamPlayer.new()
 	add_child(_player_ui)
 	add_child(_player_ui2)
+	add_child(_player_hit)
 	add_child(_tether_loop)
 	# Manual loop: restart as soon as the clip ends
 	_tether_loop.finished.connect(_tether_loop.play)
@@ -135,17 +148,31 @@ func _generate_streams() -> void:
 	_sfx["tether_strain_loop"] = _make_sweep(80.0, 150.0, 0.55, 0.40)
 	# hack_success : satisfying ascending two-tone chime
 	_sfx["hack_success"]       = _make_two_tone(440.0, 880.0, 0.12, 0.55)
+	# hack_start   : quick rising blip — connection establishing
+	_sfx["hack_start"]         = _make_sweep(300.0, 600.0, 0.12, 0.40)
+	# hack_fail    : descending buzz — firewall rejection
+	_sfx["hack_fail"]          = _make_sweep(380.0, 95.0, 0.28, 0.50)
 	# phase_shift  : rising sweep signalling world geometry change
 	_sfx["phase_shift"]        = _make_sweep(180.0, 540.0, 0.35, 0.50)
 	# tank_stalled : descending groan when N.O.V.A. loses all stability
 	_sfx["tank_stalled"]       = _make_sweep(320.0, 60.0, 0.55, 0.65)
+	# nova_hit     : sharp metal impact — N.O.V.A. takes a stability hit
+	_sfx["nova_hit"]           = _make_noise(0.09, 0.60, 2.2)
+	# jason_hurt   : short pain blip — distinct pitch from data_spike
+	_sfx["jason_hurt"]         = _make_sine(523.0, 0.07, 0.55, 3.5)
+	# pawn_swap    : mechanical hatch clunk — two descending tones
+	_sfx["pawn_swap"]          = _make_two_tone(180.0, 110.0, 0.09, 0.65)
+	# enemy_died   : crumple/collapse noise burst
+	_sfx["enemy_died"]         = _make_noise(0.20, 0.55, 0.9)
 
 
 func _load_streams() -> void:
 	# Override any procedural placeholder with a real .ogg if the file exists.
 	var names := [
 		"cannon_fire", "cannon_impact", "data_spike",
-		"tether_strain_loop", "hack_success", "phase_shift", "tank_stalled",
+		"tether_strain_loop", "hack_success", "hack_start", "hack_fail",
+		"phase_shift", "tank_stalled", "nova_hit", "jason_hurt",
+		"pawn_swap", "enemy_died",
 	]
 	for sfx_name: String in names:
 		var path := SFX_PATH + sfx_name + ".ogg"
@@ -156,8 +183,13 @@ func _load_streams() -> void:
 func _connect_signals() -> void:
 	Events.on_sfx_play_at.connect(_on_sfx_play_at)
 	Events.on_hack_completed.connect(func(): _play_ui(_player_ui,  "hack_success"))
+	Events.on_hack_started.connect(func(_d: int): _play_ui(_player_ui, "hack_start"))
+	Events.on_hack_failed.connect(func(): _play_ui(_player_ui, "hack_fail"))
 	Events.on_world_shifted.connect(func(_p): _play_ui(_player_ui2, "phase_shift"))
 	Events.on_tank_stalled.connect(func(): _play_ui(_player_ui2,  "tank_stalled"))
+	Events.on_tank_stability_changed.connect(_on_tank_stability_changed)
+	Events.on_jason_health_changed.connect(_on_jason_health_changed)
+	Events.on_enemy_died.connect(func(pos: Vector2): _on_sfx_play_at("enemy_died", pos))
 	Events.on_tether_strained.connect(_on_tether_strained)
 	Events.on_pawn_swapped.connect(_on_pawn_swapped)
 
@@ -203,6 +235,23 @@ func _on_tether_strained(severity: float) -> void:
 
 func _on_pawn_swapped(_node: Node2D) -> void:
 	_tether_loop.stop()  # Clear on pawn swap — tether_handler restarts tracking
+	_play_ui(_player_ui2, "pawn_swap")
+
+
+# ---------------------------------------------------------------------------
+# Hit sounds — only fire when the value decreases (regen/repair are silent)
+# ---------------------------------------------------------------------------
+
+func _on_tank_stability_changed(new_value: float) -> void:
+	if new_value < _prev_stability:
+		_play_ui(_player_hit, "nova_hit")
+	_prev_stability = new_value
+
+
+func _on_jason_health_changed(new_value: float) -> void:
+	if new_value < _prev_jason_hp:
+		_play_ui(_player_hit, "jason_hurt")
+	_prev_jason_hp = new_value
 
 
 # ---------------------------------------------------------------------------
