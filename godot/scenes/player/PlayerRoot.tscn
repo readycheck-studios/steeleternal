@@ -98,10 +98,61 @@ script = ExtResource("3_jason")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Jason_Pilot"]
 shape = SubResource("RectangleShape2D_jason")
 
-; Simple blue silhouette — humanoid proportions
-[node name="PlaceholderSprite" type="Polygon2D" parent="Jason_Pilot"]
-polygon = PackedVector2Array(-7, -14, 7, -14, 7, 14, -7, 14)
-color = Color(0.251, 0.647, 0.961, 1.0)
+; ── Jason armoured pilot — humanoid layers, bottom to top ─────────
+; Collision: 14×28 (half: 7×14). Amber visor + chest accent tie to NOVA palette.
+
+; Split legs (dark blue)
+[node name="LegL" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-6, 5, -1, 5, -1, 14, -6, 14)
+color = Color(0.14, 0.30, 0.55, 1.0)
+
+[node name="LegR" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(1, 5, 6, 5, 6, 14, 1, 14)
+color = Color(0.14, 0.30, 0.55, 1.0)
+
+; Tactical belt (near-black strip between torso and legs)
+[node name="Belt" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-6, 3, 6, 3, 6, 6, -6, 6)
+color = Color(0.09, 0.10, 0.15, 1.0)
+
+; Torso armour (slight trapezoid — wider at hips)
+[node name="Torso" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-5, -7, 5, -7, 6, 3, -6, 3)
+color = Color(0.18, 0.40, 0.70, 1.0)
+
+; Chest plate (brighter central panel over torso)
+[node name="ChestPlate" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-4, -6, 4, -6, 4, 1, -4, 1)
+color = Color(0.25, 0.52, 0.85, 1.0)
+
+; Amber chest accent — small power-cell indicator
+[node name="ChestAccent" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-2, -3, 2, -3, 2, -1, -2, -1)
+color = Color(0.961, 0.620, 0.043, 1.0)
+
+; Shoulder pauldrons (poke outside collision — visual only)
+[node name="ShoulderL" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-8, -7, -5, -7, -5, -3, -8, -4)
+color = Color(0.22, 0.48, 0.78, 1.0)
+
+[node name="ShoulderR" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(5, -7, 8, -7, 8, -4, 5, -3)
+color = Color(0.22, 0.48, 0.78, 1.0)
+
+; Neck connector (narrow dark strip)
+[node name="Neck" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-2, -9, 2, -9, 2, -7, -2, -7)
+color = Color(0.12, 0.18, 0.25, 1.0)
+
+; Helmet (tapers slightly at crown)
+[node name="Helmet" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-5, -14, 5, -14, 6, -9, -6, -9)
+color = Color(0.20, 0.42, 0.72, 1.0)
+
+; Amber visor — horizontal eye slit matching N.O.V.A. accent colour
+[node name="Visor" type="Polygon2D" parent="Jason_Pilot"]
+polygon = PackedVector2Array(-4, -12, 4, -12, 4, -10, -4, -10)
+color = Color(0.961, 0.620, 0.043, 1.0)
 
 ; ═══════════════════════════════════════════════════════
 ;  CAMERA & TETHER
